@@ -40,6 +40,24 @@ Here's a simple example of how to use this in React/UI code:
 
 Now instead of tossing ternary statements and if else and tracking messy variables, all of your ui state can be derived through a simpler and concise state-machine inspired function.
 
+## Code this replaces
+
+This is what I see a lot of UI code end up being:
+
+```
+const DemoButton = ({ match }) => {
+  const isUploadedText = match.demo_uploaded ? 'Demo Uploaded' : 'Demo Uploading...';
+
+  return (
+    <Button icon="download" disabled={match.config.dontRecord || !match.demo_uploaded} minimal>
+    {match.config.dontRecord ? 'Demo Not Recorded' : isUploadedText}
+  </Button>
+  );
+}
+```
+
+Touching this code is a mess, keeping track of the state tree is hard, and interleaving state values, boolean logic, and so on is cumbersome. You could write this a million different ways.
+
 ## This is naive
 
 I cobbled this together in an hour or so, it's not really tested or complete. I do think I'll end up using it quite a bit, but I'll likely rewrite the API and rename it and change a lot. Please contribute if you have ideas, I'm open to everything.
