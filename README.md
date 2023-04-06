@@ -32,7 +32,7 @@ The derived flags are pulled from the state flags. You can pass a function (and 
 
 Here's a simple example of how to use this in React/UI code:
 
-```
+```javascript
   <Button icon="download" disabled={!!flags.derived.buttonIsDisabled} minimal>
     {flags.derived.buttonText}
   </Button>
@@ -44,7 +44,7 @@ Now instead of tossing ternary statements and if else and tracking messy variabl
 
 This is what I see a lot of UI code end up being:
 
-```
+```javascript
 const DemoButton = ({ match }) => {
   const isUploadedText = match.demo_uploaded ? 'Demo Uploaded' : 'Demo Uploading...';
 
