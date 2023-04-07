@@ -1,4 +1,4 @@
-# useDeriver
+# deriveState
 
 ## What is this?
 
@@ -11,7 +11,7 @@ After playing with state machines, I realized these are effectively messy state 
 Every deriver (this whole project needs a better name) reduces down to a single state. The first key in `states` to be true is the active state. Think of these as effectively if/else if statements.
 
 ```javascript
-  const flags = useDeriver({
+  const flags = deriveState({
     states: {
       isNotRecorded: !!match.config.dontRecord,
       isUploading: !match.demo_uploaded,
