@@ -1,5 +1,5 @@
 {
-  "name": "state-derive",
+  "name": "@switz/driver",
   "module": "index.ts",
   "type": "module",
   "author": {
@@ -7,6 +7,9 @@
     "url": "https://saewitz.com"
   },
   "version": "0.0.1",
+  "repository": {
+    "url": "https://github.com/switz/driver"
+  },
   "license": "MIT",
   "devDependencies": {
     "@switz/eslint-config": "^8.0.1",
