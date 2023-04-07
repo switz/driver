@@ -2,7 +2,7 @@ import { expect, test } from 'bun:test';
 
 import deriveState from './index.js';
 
-test('basic test', () => {
+test('basic enum test', () => {
   const demoNotRecorded = false;
 
   const flags = deriveState({
@@ -12,7 +12,8 @@ test('basic test', () => {
       isUploaded: false,
     },
     derived: {
-      buttonIsDisabled: (states) => states.isNotRecorded || states.isUploading,
+      buttonIsDisabled: (state, stateEnums, activeEnum) =>
+        stateEnums.isUploading <= (activeEnum ?? Infinity),
       buttonText: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
@@ -26,15 +27,18 @@ test('basic test', () => {
   expect(flags.derived.buttonText).toBe('Demo Uploading...');
 });
 
-test('ensure order works test', () => {
+test('basic enum test2', () => {
+  const demoNotRecorded = false;
+
   const flags = deriveState({
     states: {
-      isNotRecorded: true,
-      isUploading: true,
-      isUploaded: false,
+      isNotRecorded: demoNotRecorded,
+      isUploading: false,
+      isUploaded: true,
     },
     derived: {
-      buttonIsDisabled: (state) => state.isNotRecorded || state.isUploading,
+      buttonIsDisabled: (state, stateEnums, activeEnum) =>
+        stateEnums.isUploading <= (activeEnum ?? Infinity),
       buttonText: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
@@ -43,7 +47,7 @@ test('ensure order works test', () => {
     },
   });
 
-  expect(flags.activeState).toBe('isNotRecorded');
-  expect(flags.derived.buttonIsDisabled).toBe(true);
-  expect(flags.derived.buttonText).toBe('Demo Disabled');
+  expect(flags.activeState).toBe('isUploaded');
+  expect(flags.derived.buttonIsDisabled).toBe(false);
+  expect(flags.derived.buttonText).toBe('Download Demo');
 });
