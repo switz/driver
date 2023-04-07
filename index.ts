@@ -1,41 +1,41 @@
-type DeriveFn<StateKeys extends string> = (
+type FlagFn<StateKeys extends string> = (
   states: Record<StateKeys, boolean>,
   stateEnums: Record<string, number>,
   activeEnum: number | undefined
 ) => unknown;
 
-// type DeriveRecord<StateKeys extends string, K extends object | Function> = K extends Function
-//   ? DeriveFn<StateKeys>
+// type FlagRecord<StateKeys extends string, K extends object | Function> = K extends Function
+//   ? FlagFn<StateKeys>
 //   : K extends object
 //   ? K[keyof K]
 //   : undefined;
 
-type Config<T extends string, K extends DeriveConfig<T>> = {
+type Config<T extends string, K extends FlagsConfig<T>> = {
   states: Record<T, boolean>;
   flags: K;
 };
 
-type DeriveConfig<T extends string> = Record<string, Record<T, unknown> | DeriveFn<T>>;
+type FlagsConfig<T extends string> = Record<string, Record<T, unknown> | FlagFn<T>>;
 
-type Return<T extends string, K extends DeriveConfig<T>> = Record<
+type Return<T extends string, K extends FlagsConfig<T>> = Record<
   keyof K,
-  DeriveReturn<T, K[keyof K]>
+  FlagsReturn<T, K[keyof K]>
 > & {
   activeState: T | undefined;
   activeEnum: number | undefined;
   stateEnums: Record<T, number>;
 };
 
-type DeriveReturn<
+type FlagsReturn<
   StateKeys extends string,
-  K extends object | DeriveFn<StateKeys>
-> = K extends DeriveFn<StateKeys>
-  ? ReturnType<DeriveFn<StateKeys>>
+  K extends object | FlagFn<StateKeys>
+> = K extends FlagFn<StateKeys>
+  ? ReturnType<FlagFn<StateKeys>>
   : K extends object
   ? K[keyof K]
   : undefined;
 
-function driver<const T extends string, K extends DeriveConfig<T>>(
+function driver<const T extends string, K extends FlagsConfig<T>>(
   config: Config<T, K>
 ): Return<T, K> {
   const activeState = Object.keys(config.states).find((key) => config.states[key as T]) as T;
