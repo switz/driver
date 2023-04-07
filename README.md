@@ -49,7 +49,7 @@ const DemoButton = ({ match }) => {
   const isUploadedText = match.demo_uploaded ? 'Demo Uploaded' : 'Demo Uploading...';
 
   return (
-    <Button icon="download" disabled={match.config.dontRecord || !match.demo_uploaded} minimal>
+    <Button icon="download" disabled={match.config.dontRecord || !match.demo_uploaded}>
     {match.config.dontRecord ? 'Demo Not Recorded' : isUploadedText}
   </Button>
   );
@@ -57,6 +57,37 @@ const DemoButton = ({ match }) => {
 ```
 
 Touching this code is a mess, keeping track of the state tree is hard, and interleaving state values, boolean logic, and so on is cumbersome. You could write this a million different ways.
+
+#### Now this becomes
+
+```javascript
+const DemoButton = ({ match }) => {
+  const demoButton = driver({
+    states: {
+      isNotRecorded: !!match.config.dontRecord,
+      isUploading: !match.demo_uploaded,
+      isUploaded: !!match.demo_uploaded,
+    },
+    flags: {
+      isDisabled: (states) => states.isNotRecorded || states.isUploading,
+      text: {
+        isNotRecorded: 'Demo Disabled',
+        isUploading: 'Demo Uploading...',
+        isUploaded: 'Download Demo',
+      },
+    },
+  });
+  return (
+    <Button icon="download" disabled={!!demoButton.flags.isDisabled}>
+      {demoButton.text}
+    </Button>
+  );
+}
+```
+
+The code is "longer", but all of the logic has been moved outside of the actual JSX, it's easy to understand what is supposed to be happening at a glance, and it's far more organized.
+
+The goal here is not to have _zero_ logic inside of your actual view, but to make it easier and more maintainable to design and build your view logic in some more complex situations.
 
 ## This is naive
 
