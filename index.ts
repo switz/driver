@@ -12,14 +12,16 @@ type DeriveFn<StateKeys extends string> = (
 
 type Config<T extends string, K extends DeriveConfig<T>> = {
   states: Record<T, boolean>;
-  derived: K;
+  flags: K;
 };
 
 type DeriveConfig<T extends string> = Record<string, Record<T, unknown> | DeriveFn<T>>;
 
-type Return<T extends string, K extends DeriveConfig<T>> = {
+type Return<T extends string, K extends DeriveConfig<T>> = Record<
+  keyof K,
+  DeriveReturn<T, K[keyof K]>
+> & {
   activeState: T | undefined;
-  derived: Record<keyof K, DeriveReturn<T, K[keyof K]>>;
   activeEnum: number | undefined;
   stateEnums: Record<T, number>;
 };
@@ -33,19 +35,19 @@ type DeriveReturn<
   ? K[keyof K]
   : undefined;
 
-function deriveState<const T extends string, K extends DeriveConfig<T>>(
+function driver<const T extends string, K extends DeriveConfig<T>>(
   config: Config<T, K>
 ): Return<T, K> {
   const activeState = Object.keys(config.states).find((key) => config.states[key as T]) as T;
 
-  const enums = Object.keys(config.states);
-  const activeEnum = activeState ? enums.indexOf(activeState) : undefined;
-  const stateEnums: Record<string, number> = {};
-  enums.forEach((key, index) => (stateEnums[key] = index));
+  const rawEnums = Object.keys(config.states);
+  const activeEnum = activeState ? rawEnums.indexOf(activeState) : undefined;
+  const enums: Record<string, number> = {};
+  rawEnums.forEach((key, index) => (enums[key] = index));
 
-  const derived = Object.entries(config.derived).map(([key, value]) => {
+  const flags = Object.entries(config.flags).map(([key, value]) => {
     if (typeof value === 'function') {
-      return [key, value(config.states, stateEnums, activeEnum)];
+      return [key, value(config.states, enums, activeEnum)];
     }
 
     if (typeof value === 'object' && typeof activeState === 'string') {
@@ -56,10 +58,10 @@ function deriveState<const T extends string, K extends DeriveConfig<T>>(
   });
 
   return {
+    ...Object.fromEntries(flags),
     activeState,
-    derived: Object.fromEntries(derived),
     activeEnum,
-    stateEnums,
+    enums,
   };
 }
 
@@ -81,4 +83,4 @@ function deriveState<const T extends string, K extends DeriveConfig<T>>(
 //   },
 // });
 
-export default deriveState;
+export default driver;

@@ -1,19 +1,19 @@
 import { expect, test } from 'bun:test';
 
-import deriveState from './index.js';
+import driver from './index.js';
 
 test('basic test', () => {
   const demoNotRecorded = false;
 
-  const flags = deriveState({
+  const demoButton = driver({
     states: {
       isNotRecorded: demoNotRecorded,
       isUploading: true,
       isUploaded: false,
     },
-    derived: {
-      buttonIsDisabled: (states) => states.isNotRecorded || states.isUploading,
-      buttonText: {
+    flags: {
+      isDisabled: (states) => states.isNotRecorded || states.isUploading,
+      text: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
         isUploaded: 'Download Demo',
@@ -21,21 +21,21 @@ test('basic test', () => {
     },
   });
 
-  expect(flags.activeState).toBe('isUploading');
-  expect(flags.derived.buttonIsDisabled).toBe(true);
-  expect(flags.derived.buttonText).toBe('Demo Uploading...');
+  expect(demoButton.activeState).toBe('isUploading');
+  expect(demoButton.isDisabled).toBe(true);
+  expect(demoButton.text).toBe('Demo Uploading...');
 });
 
 test('ensure order works test', () => {
-  const flags = deriveState({
+  const demoButton = driver({
     states: {
       isNotRecorded: true,
       isUploading: true,
       isUploaded: false,
     },
-    derived: {
-      buttonIsDisabled: (state) => state.isNotRecorded || state.isUploading,
-      buttonText: {
+    flags: {
+      isDisabled: (state) => state.isNotRecorded || state.isUploading,
+      text: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
         isUploaded: 'Download Demo',
@@ -43,7 +43,7 @@ test('ensure order works test', () => {
     },
   });
 
-  expect(flags.activeState).toBe('isNotRecorded');
-  expect(flags.derived.buttonIsDisabled).toBe(true);
-  expect(flags.derived.buttonText).toBe('Demo Disabled');
+  expect(demoButton.activeState).toBe('isNotRecorded');
+  expect(demoButton.isDisabled).toBe(true);
+  expect(demoButton.text).toBe('Demo Disabled');
 });

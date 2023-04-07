@@ -1,20 +1,20 @@
 import { expect, test } from 'bun:test';
 
-import deriveState from './index.js';
+import driver from './index.js';
 
 test('basic enum test', () => {
   const demoNotRecorded = false;
 
-  const flags = deriveState({
+  const demoButton = driver({
     states: {
       isNotRecorded: demoNotRecorded,
       isUploading: true,
       isUploaded: false,
     },
-    derived: {
-      buttonIsDisabled: (state, stateEnums, activeEnum) =>
+    flags: {
+      isDisabled: (state, stateEnums, activeEnum) =>
         stateEnums.isUploading <= (activeEnum ?? Infinity),
-      buttonText: {
+      text: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
         isUploaded: 'Download Demo',
@@ -22,24 +22,24 @@ test('basic enum test', () => {
     },
   });
 
-  expect(flags.activeState).toBe('isUploading');
-  expect(flags.derived.buttonIsDisabled).toBe(true);
-  expect(flags.derived.buttonText).toBe('Demo Uploading...');
+  expect(demoButton.activeState).toBe('isUploading');
+  expect(demoButton.isDisabled).toBe(true);
+  expect(demoButton.text).toBe('Demo Uploading...');
 });
 
 test('basic enum test2', () => {
   const demoNotRecorded = false;
 
-  const flags = deriveState({
+  const demoButton = driver({
     states: {
       isNotRecorded: demoNotRecorded,
       isUploading: false,
       isUploaded: true,
     },
-    derived: {
-      buttonIsDisabled: (state, stateEnums, activeEnum) =>
+    flags: {
+      isDisabled: (state, stateEnums, activeEnum) =>
         stateEnums.isUploading <= (activeEnum ?? Infinity),
-      buttonText: {
+      text: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
         isUploaded: 'Download Demo',
@@ -47,7 +47,7 @@ test('basic enum test2', () => {
     },
   });
 
-  expect(flags.activeState).toBe('isUploaded');
-  expect(flags.derived.buttonIsDisabled).toBe(false);
-  expect(flags.derived.buttonText).toBe('Download Demo');
+  expect(demoButton.activeState).toBe('isUploaded');
+  expect(demoButton.isDisabled).toBe(false);
+  expect(demoButton.text).toBe('Download Demo');
 });

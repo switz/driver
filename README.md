@@ -1,4 +1,4 @@
-# deriveState
+# driver
 
 ## What is this?
 
@@ -11,15 +11,15 @@ After playing with state machines, I realized these are effectively messy state 
 Every deriver (this whole project needs a better name) reduces down to a single state. The first key in `states` to be true is the active state. Think of these as effectively if/else if statements.
 
 ```javascript
-  const flags = deriveState({
+  const demoButton = driver({
     states: {
       isNotRecorded: !!match.config.dontRecord,
       isUploading: !match.demo_uploaded,
       isUploaded: !!match.demo_uploaded,
     },
-    derived: {
-      buttonIsDisabled: (states) => states.isNotRecorded || states.isUploading,
-      buttonText: {
+    flags: {
+      isDisabled: (states) => states.isNotRecorded || states.isUploading,
+      text: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
         isUploaded: 'Download Demo',
@@ -33,8 +33,8 @@ The derived flags are pulled from the state flags. You can pass a function (and 
 Here's a simple example of how to use this in React/UI code:
 
 ```javascript
-  <Button icon="download" disabled={!!flags.derived.buttonIsDisabled} minimal>
-    {flags.derived.buttonText}
+  <Button icon="download" disabled={!!demoButton.flags.isDisabled}>
+    {demoButton.text}
   </Button>
 ```
 
