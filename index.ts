@@ -40,10 +40,10 @@ function driver<const T extends string, K extends FlagsConfig<T>>(
 ): Return<T, K> {
   const activeState = Object.keys(config.states).find((key) => config.states[key as T]) as T;
 
-  const rawEnums = Object.keys(config.states);
-  const activeEnum = activeState ? rawEnums.indexOf(activeState) : undefined;
+  const stateKeys = Object.keys(config.states);
+  const activeEnum = activeState ? stateKeys.indexOf(activeState) : undefined;
   const enums: Record<string, number> = {};
-  rawEnums.forEach((key, index) => (enums[key] = index));
+  stateKeys.forEach((key, index) => (enums[key] = index));
 
   const flags = Object.entries(config.flags).map(([key, value]) => {
     if (typeof value === 'function') {
