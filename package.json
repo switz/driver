@@ -2,6 +2,7 @@
   "name": "@switz/driver",
   "module": "index.ts",
   "type": "module",
+  "private": false,
   "author": {
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
