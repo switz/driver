@@ -5,7 +5,7 @@
     ],
     "module": "esnext",
     "target": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "nodenext",
     "strict": true,
     "downlevelIteration": true,
     "skipLibCheck": true,

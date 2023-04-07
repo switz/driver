@@ -6,6 +6,18 @@ I've noticed I often write complex logic-y UI code that turns into spaghetti to 
 
 After playing with state machines, I realized these are effectively messy state machines I was designing (without transitions or a machine). I'm sure there is prior art, or a better solution, but I couldn't find anything.
 
+## Installation
+
+```bash
+$ yarn add @switz/driver
+```
+
+or
+
+```bash
+$ npm i @switz/driver
+```
+
 ## Simple example:
 
 Every deriver (this whole project needs a better name) reduces down to a single state. The first key in `states` to be true is the active state. Think of these as effectively if/else if statements.
@@ -92,7 +104,7 @@ The goal here is not to have _zero_ logic inside of your actual view, but to mak
 
 ## This is naive
 
-I cobbled this together in an hour or so, it's not really tested or complete. I do think I'll end up using it quite a bit, but I'll likely rewrite the API and rename it and change a lot. Please contribute if you have ideas, I'm open to everything.
+I cobbled this together in a few hours or so, it's not really tested or complete. I do think I'll end up using it quite a bit, but I'll likely rewrite the API and rename it and change a lot. Please contribute if you have ideas, I'm open to everything.
 
 ## Typescript
 
