@@ -33,7 +33,7 @@ The derived flags are pulled from the state flags. You can pass a function (and 
 Here's a simple example of how to use this in React/UI code:
 
 ```javascript
-  <Button icon="download" disabled={!!demoButton.flags.isDisabled}>
+  <Button icon="download" disabled={!!demoButton.isDisabled}>
     {demoButton.text}
   </Button>
 ```
@@ -50,8 +50,8 @@ const DemoButton = ({ match }) => {
 
   return (
     <Button icon="download" disabled={match.config.dontRecord || !match.demo_uploaded}>
-    {match.config.dontRecord ? 'Demo Not Recorded' : isUploadedText}
-  </Button>
+      {match.config.dontRecord ? 'Demo Not Recorded' : isUploadedText}
+    </Button>
   );
 }
 ```
@@ -77,8 +77,9 @@ const DemoButton = ({ match }) => {
       },
     },
   });
+
   return (
-    <Button icon="download" disabled={!!demoButton.flags.isDisabled}>
+    <Button icon="download" disabled={!!demoButton.isDisabled}>
       {demoButton.text}
     </Button>
   );
