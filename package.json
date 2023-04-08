@@ -9,7 +9,7 @@
   },
   "version": "0.0.6",
   "repository": {
-    "url": "https://github.com/switz/driver"
+    "url": "https://github.com/switz/driver.git"
   },
   "license": "MIT",
   "scripts": {
@@ -20,5 +20,8 @@
     "bun-types": "^0.5.0",
     "prettier": "^2.8.7",
     "typescript": "^5.0.3"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }
