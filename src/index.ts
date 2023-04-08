@@ -65,4 +65,22 @@ function driver<const T extends string, K extends FlagsConfig<T>>(
   };
 }
 
+// const flags = fn({
+//   states: {
+//     hello: true,
+//     hello2: false,
+//   },
+//   derived: {
+//     foobar: {
+//       hello: 1,
+//       hello2: 3,
+//     },
+//     another: {
+//       hello: 'str',
+//       hello2: 'foo',
+//     },
+//     test: (states) => states.hello2,
+//   },
+// });
+
 export default driver;

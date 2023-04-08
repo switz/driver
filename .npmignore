@@ -1,3 +1,4 @@
 *.test.ts
 .vscode/
 .eslintrc
+*.lockb

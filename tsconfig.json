@@ -20,5 +20,5 @@
     ],
     "declaration": true,
   },
-  "include": ["index.ts"]
+  "include": ["src/index.ts"]
 }

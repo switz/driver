@@ -1,8 +1,8 @@
 import { expect, test } from 'bun:test';
 
-import driver from './index.js';
+import driver from '../src/index.js';
 
-test('basic enum test', () => {
+test('basic test', () => {
   const demoNotRecorded = false;
 
   const demoButton = driver({
@@ -12,7 +12,7 @@ test('basic enum test', () => {
       isUploaded: false,
     },
     flags: {
-      isDisabled: (state, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
+      isDisabled: (states) => states.isNotRecorded || states.isUploading,
       text: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
@@ -26,17 +26,15 @@ test('basic enum test', () => {
   expect(demoButton.text).toBe('Demo Uploading...');
 });
 
-test('basic enum test2', () => {
-  const demoNotRecorded = false;
-
+test('ensure order works test', () => {
   const demoButton = driver({
     states: {
-      isNotRecorded: demoNotRecorded,
-      isUploading: false,
-      isUploaded: true,
+      isNotRecorded: true,
+      isUploading: true,
+      isUploaded: false,
     },
     flags: {
-      isDisabled: (state, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
+      isDisabled: (state) => state.isNotRecorded || state.isUploading,
       text: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
@@ -45,7 +43,7 @@ test('basic enum test2', () => {
     },
   });
 
-  expect(demoButton.activeState).toBe('isUploaded');
-  expect(demoButton.isDisabled).toBe(false);
-  expect(demoButton.text).toBe('Download Demo');
+  expect(demoButton.activeState).toBe('isNotRecorded');
+  expect(demoButton.isDisabled).toBe(true);
+  expect(demoButton.text).toBe('Demo Disabled');
 });
