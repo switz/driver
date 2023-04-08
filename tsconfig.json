@@ -3,7 +3,7 @@
     "lib": [
       "ESNext"
     ],
-    "module": "esnext",
+    "module": "commonjs",
     "target": "esnext",
     "moduleResolution": "nodenext",
     "strict": true,
@@ -13,8 +13,11 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
+    "esModuleInterop": true,
+    "outDir": "lib",
     "types": [
       "bun-types" // add Bun global
     ]
-  }
+  },
+  "include": ["index.ts"]
 }
