@@ -1,18 +1,17 @@
 {
   "name": "@switz/driver",
-  "module": "index.ts",
+  "module": "lib/index.js",
   "type": "module",
   "private": false,
   "author": {
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "repository": {
     "url": "https://github.com/switz/driver"
   },
   "license": "MIT",
-  "main": "lib/index.js",
   "scripts": {
     "build": "tsc"
   },
