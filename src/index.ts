@@ -15,7 +15,7 @@ type Config<T extends string, K extends FlagsConfig<T>> = {
   flags: K;
 };
 
-type FlagsConfig<T extends string> = Record<string, Record<T, unknown> | FlagFn<T>>;
+type FlagsConfig<T extends string> = Record<string, Record<T, unknown> | FlagFn<T> | T[]>;
 
 type Return<T extends string, K extends FlagsConfig<T>> = Record<
   keyof K,

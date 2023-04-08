@@ -61,7 +61,7 @@ Here's a simple example of how to use this in React/UI code:
   </Button>
 ```
 
-Now instead of tossing ternary statements and if else and tracking messy variables, all of your ui state can be derived through a simpler and concise state-machine inspired function.
+Now instead of tossing ternary statements and if else and tracking messy declarations, all of your ui state can be derived through a simpler and concise state-machine inspired function.
 
 ## Code this replaces
 
