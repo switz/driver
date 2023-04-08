@@ -4,6 +4,8 @@ Driver is a framework agnostic, zero dependency, tiny utility for organizing boo
 
 After working with state machines, I realized I was tracking UI states via a plethora of boolean flags, often intermixing const/let variables with inline ternary logic. This is inevitable when working with a library like react.
 
+Even though state machines are very useful, often my UI state is derived from boolean logic (via API data or useStates) and not from a state machine I want to build and manually transition myself. This is effectively a dumb state machine that is controlled externally.
+
 I wanted a way to carefully craft explicit states and derive common values from them. For example, a particular button component may have several states, but will always need to know:
 
 1. is the button disabled?
@@ -31,7 +33,10 @@ $ npm i @switz/driver
 
 Every driver (this whole project needs a better name) reduces down to a single state. The first key in `states` to be true is the active state. Think of these as effectively if/else if statements.
 
+This library has no dependencies and is not React specific, but it only derives values from what you pass into it and does not watch/observe for state changes. Here is an example in a react component though:
+
 ```javascript
+const DownloadButton = ({ match }) => {
   const demoButton = driver({
     states: {
       isNotRecorded: !!match.config.dontRecord,
@@ -40,6 +45,8 @@ Every driver (this whole project needs a better name) reduces down to a single s
     },
     flags: {
       isDisabled: ['isNotRecorded', 'isUploading'],
+      // could also write this as:
+      // isDisabled: (states) => states.isNotRecorded || states.isUploading,
       text: {
         isNotRecorded: 'Demo Disabled',
         isUploading: 'Demo Uploading...',
@@ -47,21 +54,20 @@ Every driver (this whole project needs a better name) reduces down to a single s
       },
     },
   });
+
+  return (
+    <Button icon="download" disabled={!!demoButton.isDisabled}>
+      {demoButton.text}
+    </Button>
+  );
+}
 ```
 
 The flags are pulled from the state keys. You can pass a function (and return any value), an array to mark boolean flags, or you can pass an object with the state keys, and whatever the current state key is will return that value.
 
-`isDisabled` above returns a boolean value out of the states, whereas `text` returns a string that corresponds to the currently active state value.
+`isDisabled` is true if any of the specified state keys are active, whereas `text` returns whichever string corresponds directly to the currently active state value.
 
-Here's a simple example of how to use this in React/UI code:
-
-```javascript
-  <Button icon="download" disabled={!!demoButton.isDisabled}>
-    {demoButton.text}
-  </Button>
-```
-
-Now instead of tossing ternary statements and if else and tracking messy declarations, all of your ui state can be derived through a simpler and concise state-machine inspired function.
+Now instead of tossing ternary statements and if else and tracking messy declarations, all of your ui state can be derived through a simpler and concise state-machine inspired pattern.
 
 ## Code this replaces
 
