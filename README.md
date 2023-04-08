@@ -117,7 +117,7 @@ The goal here is not to have _zero_ logic inside of your actual view, but to mak
 
 The `driver` function takes an object parameter with two keys: `states` and `flags`.
 
-`states` is an object whose keys are the potential state values. Passing boolean values into these keys dictates which state key is currently active. The first boolean key is the active state.
+`states` is an object whose keys are the potential state values. Passing boolean values into these keys dictates which state key is currently active. The first key with a truthy value is the active state.
 
 `flags` is an object whose keys derive their values from what the current state key is. There are three interface for the `flags` object.
 
