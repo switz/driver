@@ -1,21 +1,15 @@
-type FlagFn<StateKeys extends string> = (
-  states: Record<StateKeys, boolean>,
-  stateEnums: Record<string, number>,
-  activeEnum: number | undefined
-) => unknown;
-
-// type FlagRecord<StateKeys extends string, K extends object | Function> = K extends Function
-//   ? FlagFn<StateKeys>
-//   : K extends object
-//   ? K[keyof K]
-//   : undefined;
-
 type Config<T extends string, K extends FlagsConfig<T>> = {
   states: Record<T, boolean>;
   flags: K;
 };
 
 type FlagsConfig<T extends string> = Record<string, Record<T, unknown> | FlagFn<T>>;
+
+type FlagFn<StateKeys extends string> = (
+  states: Record<StateKeys, boolean>,
+  stateEnums: Record<string, number>,
+  activeEnum: number | undefined
+) => unknown;
 
 type Return<T extends string, K extends FlagsConfig<T>> = Record<
   keyof K,
@@ -25,6 +19,12 @@ type Return<T extends string, K extends FlagsConfig<T>> = Record<
   activeEnum: number | undefined;
   stateEnums: Record<T, number>;
 };
+
+// type FlagRecord<StateKeys extends string, K extends object | Function> = K extends Function
+//   ? FlagFn<StateKeys>
+//   : K extends object
+//   ? K[keyof K]
+//   : undefined;
 
 type FlagsReturn<
   StateKeys extends string,
