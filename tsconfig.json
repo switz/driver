@@ -17,7 +17,8 @@
     "outDir": "lib",
     "types": [
       "bun-types" // add Bun global
-    ]
+    ],
+    "declaration": true,
   },
   "include": ["index.ts"]
 }
