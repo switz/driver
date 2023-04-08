@@ -31,9 +31,9 @@ $ npm i @switz/driver
 
 ## Simple example:
 
-Every driver (this whole project needs a better name) reduces down to a single state. The first key in `states` to be true is the active state. Think of these as effectively if/else if statements.
+Every _driver_ contains a single active state. The first key in `states` to be true is the active state. Think of these as effectively if/else if statements.
 
-This library has no dependencies and is not React specific, but it only derives values from what you pass into it and does not watch/observe for state changes. Here is an example in a react component though:
+This library has no dependencies and is not React specific, but it only derives values from what you pass into it and does not watch/observe for state changes which fits well into the React paradigm. Here is an example in a React component:
 
 ```javascript
 const DownloadButton = ({ match }) => {
