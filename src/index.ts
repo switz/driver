@@ -15,7 +15,10 @@ type Config<T extends string, K extends FlagsConfig<T>> = {
   flags: K;
 };
 
-type FlagsConfig<T extends string> = Record<string, Record<T, unknown> | FlagFn<T> | T[]>;
+type FlagsConfig<T extends string> = Record<
+  string | symbol | number,
+  Record<T, unknown> | FlagFn<T> | T[]
+>;
 
 type Return<T extends string, K extends FlagsConfig<T>> = Record<
   keyof K,
@@ -28,9 +31,11 @@ type Return<T extends string, K extends FlagsConfig<T>> = Record<
 
 type FlagsReturn<
   StateKeys extends string,
-  K extends object | FlagFn<StateKeys>
+  K extends FlagsConfig<StateKeys>[keyof K]
 > = K extends FlagFn<StateKeys>
   ? ReturnType<FlagFn<StateKeys>>
+  : K extends Array<StateKeys>
+  ? boolean
   : K extends object
   ? K[keyof K]
   : undefined;
@@ -50,8 +55,14 @@ function driver<const T extends string, K extends FlagsConfig<T>>(
       return [key, value(config.states, enums, activeEnum)];
     }
 
-    if (typeof value === 'object' && typeof activeState === 'string') {
-      return [key, value[activeState]];
+    if (typeof activeState === 'string') {
+      if (Array.isArray(value)) {
+        return [key, value.includes(activeState)];
+      }
+
+      if (typeof value === 'object') {
+        return [key, value[activeState]];
+      }
     }
 
     return [key, value];
