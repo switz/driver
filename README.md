@@ -200,9 +200,7 @@ I cobbled this together in a few hours or so, it's not fully tested or complete.
 
 ## Typescript
 
-The typing is weak at the moment. Suggestions here would be helpful on how to derive the flags' values dynamically based on their `states` keys and `flags` values.
-
-Right now, you may have to specify the types of the values the `flags` return as they are marked as `unknown`. I'm not sure how to dynamically type these, though I think it is possible to do. If you know how, please let me know.
+This library is fully typed end-to-end. That said, this is the first time I've typed a library of this kind and I'm sure it could be improved. If you run into an issue, please raise it or submit a PR.
 
 ## Local Development
 
