@@ -1,13 +1,13 @@
 {
   "name": "@switz/driver",
-  "module": "lib/index.js",
+  "exports": "./lib/index.js",
   "type": "module",
   "private": false,
   "author": {
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
@@ -15,6 +15,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc"
+  },
+  "engines": {
+    "node": " >=14.13.1 || >=16.0.0"
   },
   "devDependencies": {
     "@switz/eslint-config": "^8.0.1",
