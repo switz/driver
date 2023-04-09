@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "lib": [
-      "ESNext"
+      "ES5"
     ],
-    "module": "ESNext",
-    "target": "esnext",
-    "moduleResolution": "nodenext",
+    "module": "CommonJS",
+    "target": "ES5",
+    "moduleResolution": "node",
     "strict": true,
     "downlevelIteration": true,
     "skipLibCheck": true,
