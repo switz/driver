@@ -1,8 +1,6 @@
-type AnyFn = (any: any) => any;
-
 type FlagFn<StateKeys extends string> = (
   states: Record<StateKeys, boolean>,
-  stateEnums: Record<string, number>,
+  stateEnums: Record<StateKeys, number>,
   activeEnum: number | undefined
 ) => unknown;
 
@@ -29,7 +27,7 @@ type Return<T extends string, K extends FlagsConfig<T>> = FlagsReturn<T, K> & {
 };
 
 type FlagsReturn<StateKeys extends string, K extends FlagsConfig<StateKeys>> = {
-  [P in keyof K]: K[P] extends AnyFn
+  [P in keyof K]: K[P] extends FlagFn<StateKeys>
     ? ReturnType<K[P]>
     : K[P] extends Array<StateKeys>
     ? boolean
