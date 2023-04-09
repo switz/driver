@@ -2,7 +2,7 @@
 
 Driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic trees.
 
-After working with state machines, I realized I was tracking UI states via a plethora of boolean flags, often intermixing const/let variables with inline ternary logic. This is inevitable when working with a library like react.
+After working with state machines, I realized I was tracking UI states via a plethora of boolean flags, often intermixing const/let declarations with inline ternary logic. This is inevitable when working with a library like react.
 
 Even though state machines are very useful, often my UI state is derived from boolean logic (via API data or useStates) and not from a state machine I want to build and manually transition myself. This is effectively a dumb state machine that is controlled externally.
 
