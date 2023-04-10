@@ -16,10 +16,10 @@ const flags = driver({
   },
 });
 
-expectType<boolean>(flags.isDisabled);
+expectType<boolean | undefined>(flags.isDisabled);
 expectType<number | undefined>(flags.activeEnum);
-expectType<'hello' | 'foobar' | undefined>(flags.activeState);
-expectType<Record<'hello' | 'foobar', number>>(flags.stateEnums);
+expectType<'hello' | 'foobar' | 'test' | undefined>(flags.activeState);
+expectType<Record<'hello' | 'foobar' | 'test', number>>(flags.stateEnums);
 expectType<string>(flags.optionalParams);
 
 // expect an error because no params are passed into a flag
