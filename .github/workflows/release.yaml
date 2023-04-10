@@ -1,0 +1,20 @@
+name: Release
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: canary
+      - run: bun install
+      - run: bun run test
+      - run: bun run build
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_AUTH_TOKEN }}
