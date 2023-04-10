@@ -1,22 +1,27 @@
 {
   "name": "@switz/driver",
-  "main": "./lib/index.js",
+  "main": "dist/index.js",
+  "module": "dist/driver.esm.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
   "private": false,
   "author": {
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.1.6",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
   },
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
     "prepublish": "build",
     "test": "bun test && bun run test-types",
-    "test-types": "tsd -t './src/index.ts' -f test/"
+    "test-types": "tsd -t './src/index.ts' -f test/",
+    "analyze": "size-limit --why",
+    "build": "dts build",
+    "prepare": "dts build"
   },
   "engines": {
     "node": " >=14.13.1 || >=16.0.0"
@@ -24,7 +29,9 @@
   "devDependencies": {
     "@switz/eslint-config": "^8.0.1",
     "bun-types": "^0.5.0",
+    "dts-cli": "^2.0.0",
     "prettier": "^2.8.7",
+    "size-limit": "^8.2.4",
     "tsd": "^0.28.1",
     "typescript": "^5.0.3"
   }

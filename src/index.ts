@@ -63,12 +63,7 @@ function driver<const T extends string, K extends FlagsConfig<T>>(
     return [key, value];
   });
 
-  return {
-    ...Object.fromEntries(flags),
-    activeState,
-    activeEnum,
-    enums,
-  };
+  return Object.assign({}, Object.fromEntries(flags), { activeState, activeEnum, enums });
 }
 
 export default driver;

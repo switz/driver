@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
-    "lib": [
-      "ES5"
-    ],
-    "module": "CommonJS",
-    "target": "ES5",
+    "lib": ["ESNext"],
+    "module": "ESNext",
     "moduleResolution": "node",
+    "importHelpers": false,
+    "declaration": true,
+    "sourceMap": true,
     "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "downlevelIteration": true,
     "skipLibCheck": true,
     "jsx": "preserve",
@@ -18,7 +23,7 @@
     "types": [
       "bun-types" // add Bun global
     ],
-    "declaration": true,
+    "noEmit": true
   },
   "include": ["src/index.ts"]
 }
