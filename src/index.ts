@@ -9,9 +9,14 @@ type Config<T extends string, K extends FlagsConfig<T>> = {
   flags: K;
 };
 
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
+  {
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+  }[Keys];
+
 type FlagsConfig<T extends string> = Record<
   string | symbol | number,
-  Record<T, unknown> | FlagFn<T> | T[]
+  RequireAtLeastOne<Partial<Record<T, unknown>>, T> | FlagFn<T> | T[]
 >;
 
 type Return<T extends string, K extends FlagsConfig<T>> = FlagsReturn<T, K> & {
