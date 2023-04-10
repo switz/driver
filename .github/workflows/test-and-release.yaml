@@ -1,5 +1,4 @@
-name: Bun CI
-
+name: Driver Build
 on:
   push:
     branches: [ main ]
@@ -8,9 +7,7 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Setup Bun

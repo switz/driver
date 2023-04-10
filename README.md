@@ -1,5 +1,7 @@
 # driver
 
+[![Build](https://github.com/switz/driver/actions/workflows/test-and-release.yaml/badge.svg)](https://github.com/switz/driver/actions/workflows/test-and-release.yaml)
+
 Driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic trees.
 
 After working with state machines, I realized I was tracking UI states via a plethora of boolean flags, often intermixing const/let declarations with inline ternary logic. This is inevitable when working with a library like react.
