@@ -11,10 +11,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x]
-
     steps:
       - uses: actions/checkout@v3
       - name: Setup Bun
