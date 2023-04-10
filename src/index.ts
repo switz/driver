@@ -4,12 +4,6 @@ type FlagFn<StateKeys extends string> = (
   activeEnum: number | undefined
 ) => unknown;
 
-// type FlagRecord<StateKeys extends string, K extends object | Function> = K extends Function
-//   ? FlagFn<StateKeys>
-//   : K extends object
-//   ? K[keyof K]
-//   : undefined;
-
 type Config<T extends string, K extends FlagsConfig<T>> = {
   states: Record<T, boolean>;
   flags: K;
