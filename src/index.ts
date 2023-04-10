@@ -23,6 +23,7 @@ type Return<T extends string, K extends FlagsConfig<T>> = FlagsReturn<T, K> & {
   activeState: T | undefined;
   activeEnum: number | undefined;
   stateEnums: Record<T, number>;
+  states: Record<T, boolean | undefined>;
 };
 
 type FlagsReturn<StateKeys extends string, K extends FlagsConfig<StateKeys>> = {
@@ -62,7 +63,12 @@ function driver<const T extends string, K extends FlagsConfig<T>>(
     return [key, value];
   });
 
-  return Object.assign({}, Object.fromEntries(flags), { activeState, activeEnum, enums });
+  return Object.assign({}, Object.fromEntries(flags), {
+    activeState,
+    activeEnum,
+    enums,
+    states: config.states,
+  });
 }
 
 export default driver;
