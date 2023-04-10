@@ -19,7 +19,7 @@
     "prepublish": "build",
     "test": "bun test && bun run test-types",
     "test-types": "tsd -t './src/index.ts' -f test/",
-    "analyze": "size-limit --why",
+    "size": "size-limit",
     "build": "dts build",
     "prepare": "dts build"
   },
@@ -27,6 +27,7 @@
     "node": " >=14.13.1 || >=16.0.0"
   },
   "devDependencies": {
+    "@size-limit/preset-small-lib": "^8.2.4",
     "@switz/eslint-config": "^8.0.1",
     "bun-types": "^0.5.0",
     "dts-cli": "^2.0.0",
@@ -34,5 +35,12 @@
     "size-limit": "^8.2.4",
     "tsd": "^0.28.1",
     "typescript": "^5.0.3"
-  }
+  },
+  "size-limit": [
+    {
+      "path": "dist/driver.esm.js",
+      "limit": "1 kB",
+      "brotli": true
+    }
+  ]
 }
