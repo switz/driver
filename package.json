@@ -16,7 +16,7 @@
     "build": "tsc",
     "prepublish": "build",
     "test": "bun test && bun run test-types",
-    "test-types": "tsd -t './lib/index.d.ts' -f test/"
+    "test-types": "tsd -t './src/index.ts' -f test/"
   },
   "engines": {
     "node": " >=14.13.1 || >=16.0.0"
