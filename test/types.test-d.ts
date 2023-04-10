@@ -6,6 +6,7 @@ const flags = driver({
   states: {
     hello: true,
     foobar: false,
+    test: undefined,
   },
   flags: {
     isDisabled: (states) => states.hello,

@@ -5,7 +5,7 @@ type FlagFn<StateKeys extends string> = (
 ) => unknown;
 
 type Config<T extends string, K extends FlagsConfig<T>> = {
-  states: Record<T, boolean>;
+  states: Record<T, boolean | undefined>;
   flags: K;
 };
 
@@ -37,7 +37,7 @@ type FlagsReturn<StateKeys extends string, K extends FlagsConfig<StateKeys>> = {
 function driver<const T extends string, K extends FlagsConfig<T>>(
   config: Config<T, K>
 ): Return<T, K> {
-  const activeState = Object.keys(config.states).find((key) => config.states[key as T]) as T;
+  const activeState = Object.keys(config.states).find((key) => !!config.states[key as T]) as T;
 
   const stateKeys = Object.keys(config.states);
   const activeEnum = activeState ? stateKeys.indexOf(activeState) : undefined;
