@@ -1,6 +1,6 @@
 # driver
 
-[![Build](https://github.com/switz/driver/actions/workflows/test-and-release.yaml/badge.svg)](https://github.com/switz/driver/actions/workflows/test-and-release.yaml)
+[![Build](https://github.com/switz/driver/actions/workflows/release.yaml/badge.svg)](https://github.com/switz/driver/actions/workflows/release.yaml)
 
 Driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic trees.
 
