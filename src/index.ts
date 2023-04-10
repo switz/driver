@@ -1,5 +1,5 @@
 type FlagFn<StateKeys extends string> = (
-  states: Record<StateKeys, boolean>,
+  states: Record<StateKeys, boolean | undefined>,
   stateEnums: Record<StateKeys, number>,
   activeEnum: number | undefined
 ) => unknown;
