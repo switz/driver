@@ -50,14 +50,12 @@ function driver<const T extends string, K extends FlagsConfig<T>>(
       return [key, value(config.states, enums, activeEnum)];
     }
 
-    if (typeof activeState === 'string') {
-      if (Array.isArray(value)) {
-        return [key, value.includes(activeState)];
-      }
+    if (Array.isArray(value)) {
+      return [key, value.includes(activeState)];
+    }
 
-      if (typeof value === 'object') {
-        return [key, value[activeState]];
-      }
+    if (typeof value === 'object') {
+      return [key, value[activeState]];
     }
 
     return [key, value];

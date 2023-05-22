@@ -49,3 +49,25 @@ test('basic fn test 2', () => {
   expect(demoButton.isDisabled).toBe(10);
   expect(demoButton.text).toBe('Download Demo');
 });
+
+test('fns: when no state is true', () => {
+  const demoButton = driver({
+    states: {
+      isNotRecorded: false,
+      isUploading: false,
+      isUploaded: false,
+    },
+    flags: {
+      isDisabled: (states) => (states.isNotRecorded || states.isUploading ? 1000 : 10),
+      text: {
+        isNotRecorded: 'Demo Disabled',
+        isUploading: 'Demo Uploading...',
+        isUploaded: 'Download Demo',
+      },
+    },
+  });
+
+  expect(demoButton.activeState).toBe(undefined);
+  expect(demoButton.isDisabled).toBe(10);
+  expect(demoButton.text).toBe(undefined);
+});

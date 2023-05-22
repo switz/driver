@@ -49,3 +49,25 @@ test('basic enum test2', () => {
   expect(demoButton.isDisabled).toBe(false);
   expect(demoButton.text).toBe('Download Demo');
 });
+
+test('enums: when no state is true', () => {
+  const demoButton = driver({
+    states: {
+      isNotRecorded: false,
+      isUploading: false,
+      isUploaded: false,
+    },
+    flags: {
+      isDisabled: (_, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
+      text: {
+        isNotRecorded: 'Demo Disabled',
+        isUploading: 'Demo Uploading...',
+        isUploaded: 'Download Demo',
+      },
+    },
+  });
+
+  expect(demoButton.activeState).toBe(undefined);
+  expect(demoButton.isDisabled).toBe(true);
+  expect(demoButton.text).toBe(undefined);
+});
