@@ -1,14 +1,13 @@
-import { expectType } from 'tsd';
+import { expectType, expectError } from 'tsd';
 import driver from '../src/index';
-import { expectError } from 'tsd';
 
-const flags = driver({
+const derived = driver({
   states: {
     hello: true,
     foobar: false,
     test: undefined,
   },
-  flags: {
+  derived: {
     isDisabled: (states) => states.hello,
     optionalParams: {
       foobar: 'hi',
@@ -16,11 +15,11 @@ const flags = driver({
   },
 });
 
-expectType<boolean | undefined>(flags.isDisabled);
-expectType<number | undefined>(flags.activeEnum);
-expectType<'hello' | 'foobar' | 'test' | undefined>(flags.activeState);
-expectType<Record<'hello' | 'foobar' | 'test', number>>(flags.stateEnums);
-expectType<string>(flags.optionalParams);
+expectType<boolean | undefined>(derived.isDisabled);
+expectType<number | undefined>(derived.activeEnum);
+expectType<'hello' | 'foobar' | 'test' | undefined>(derived.activeState);
+expectType<Record<'hello' | 'foobar' | 'test', number>>(derived.stateEnums);
+expectType<string>(derived.optionalParams);
 
 // expect an error because no params are passed into a flag
 expectError(
@@ -29,7 +28,7 @@ expectError(
       hello: true,
       foobar: false,
     },
-    flags: {
+    derived: {
       isDisabled: (states) => states.hello,
       noParams: {},
     },

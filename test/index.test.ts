@@ -11,6 +11,30 @@ test('basic test', () => {
       isUploading: true,
       isUploaded: false,
     },
+    derived: {
+      isDisabled: (states) => states.isNotRecorded || states.isUploading,
+      text: {
+        isNotRecorded: 'Demo Disabled',
+        isUploading: 'Demo Uploading...',
+        isUploaded: 'Download Demo',
+      },
+    },
+  });
+
+  expect(demoButton.activeState).toBe('isUploading');
+  expect(demoButton.isDisabled).toBe(true);
+  expect(demoButton.text).toBe('Demo Uploading...');
+});
+
+test('basic test that flags still works', () => {
+  const demoNotRecorded = false;
+
+  const demoButton = driver({
+    states: {
+      isNotRecorded: demoNotRecorded,
+      isUploading: true,
+      isUploaded: false,
+    },
     flags: {
       isDisabled: (states) => states.isNotRecorded || states.isUploading,
       text: {
@@ -33,7 +57,7 @@ test('ensure order works test', () => {
       isUploading: true,
       isUploaded: false,
     },
-    flags: {
+    derived: {
       isDisabled: (state) => state.isNotRecorded || state.isUploading,
       text: {
         isNotRecorded: 'Demo Disabled',
@@ -55,7 +79,7 @@ test('when no state is true', () => {
       isUploading: false,
       isUploaded: false,
     },
-    flags: {
+    derived: {
       isDisabled: (state) => state.isNotRecorded || state.isUploading,
       text: {
         isNotRecorded: 'Demo Disabled',

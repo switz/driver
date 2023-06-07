@@ -12,7 +12,7 @@ function driver<const T extends string, K extends DerivedConfig<T>>(
 
   const derived = config.derived ?? config.flags;
 
-  const flags = derived
+  const derivedData = derived
     ? Object.entries(derived).map(([key, value]) => {
         if (typeof value === 'function') {
           return [key, value(config.states, enums, activeEnum)];
@@ -30,7 +30,7 @@ function driver<const T extends string, K extends DerivedConfig<T>>(
       })
     : [];
 
-  return Object.assign({}, Object.fromEntries(flags), {
+  return Object.assign({}, Object.fromEntries(derivedData), {
     activeState,
     activeEnum,
     enums,

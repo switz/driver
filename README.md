@@ -4,7 +4,7 @@
 
 Driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic trees.
 
-After working with state machines, I realized I was tracking UI states via a plethora of boolean flags, often intermixing const/let declarations with inline ternary logic. This is inevitable when working with a library like react.
+After working with state machines, I realized I was tracking UI states via a plethora of boolean values, often intermixing const/let declarations with inline ternary logic. This is inevitable when working with a library like react.
 
 Even though state machines are very useful, often my UI state is derived from boolean logic (via API data or useStates) and not from a state machine I want to build and manually transition myself. This is effectively a dumb state machine that is controlled externally.
 
@@ -45,7 +45,7 @@ const DownloadButton = ({ match }) => {
       isUploading: !match.demo_uploaded,
       isUploaded: !!match.demo_uploaded,
     },
-    flags: {
+    derived: {
       isDisabled: ['isNotRecorded', 'isUploading'],
       // could also write this as:
       // isDisabled: (states) => states.isNotRecorded || states.isUploading,
@@ -65,7 +65,7 @@ const DownloadButton = ({ match }) => {
 }
 ```
 
-The flags are pulled from the state keys. You can pass a function (and return any value), an array to mark boolean flags, or you can pass an object with the state keys, and whatever the current state key is will return that value.
+The derived data is pulled from the state keys. You can pass a function (and return any value), an array to mark boolean derived flags, or you can pass an object with the state keys, and whatever the current state key is will return that value.
 
 `isDisabled` is true if any of the specified state keys are active, whereas `text` returns whichever string corresponds directly to the currently active state value.
 
@@ -99,7 +99,7 @@ const DemoButton = ({ match }) => {
       isUploading: !match.demo_uploaded,
       isUploaded: !!match.demo_uploaded,
     },
-    flags: {
+    derived: {
       isDisabled: (states) => states.isNotRecorded || states.isUploading,
       text: {
         isNotRecorded: 'Demo Disabled',
@@ -123,11 +123,11 @@ The goal here is not to have _zero_ logic inside of your actual view, but to mak
 
 ## Docs
 
-The `driver` function takes an object parameter with two keys: `states` and `flags`.
+The `driver` function takes an object parameter with two keys: `states` and `derived`.
 
 `states` is an object whose keys are the potential state values. Passing boolean values into these keys dictates which state key is currently active. The first key with a truthy value is the active state.
 
-`flags` is an object whose keys derive their values from what the current state key is. There are three interface for the `flags` object.
+`derived` is an object whose keys derive their values from what the current state key is. There are three interface for the `derived` object.
 
 ### States
 
@@ -140,14 +140,14 @@ The `driver` function takes an object parameter with two keys: `states` and `fla
 },
 ```
 
-### Flags
+### Derived
 
 #### Function
 
 You can return any value you'd like out of the function using the state keys
 
 ```javascript
-// flags
+// derived
 {
   isDisabled: (states) => states.isNotRecorded || states.isUploading,
 }
@@ -156,7 +156,7 @@ You can return any value you'd like out of the function using the state keys
 or you can access generated enums for more flexible logic
 
 ```javascript
-// flags
+// derived
 {
   isDisabled: (state, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
 }
@@ -169,7 +169,7 @@ This declares that any state key _above_ isUploading means the button is disable
 By using an array, you can specify a boolean if any item in the array matches the current state:
 
 ```javascript
-// flags
+// derived
 {
   isDisabled: ['isNotRecorded', 'isUploading'],
 }
@@ -182,7 +182,7 @@ This is the same as writing: `(states) => states.isNotRecorded || states.isUploa
 If you want to have a unique value per active state, an object map is the easiest way to declare as such. Each key maps to what the value is for the active state. For Example:
 
 ```javascript
-// flags
+// derived
 {
   text: {
     isNotRecorded: 'Demo Disabled',

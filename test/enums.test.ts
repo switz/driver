@@ -11,7 +11,7 @@ test('basic enum test', () => {
       isUploading: true,
       isUploaded: false,
     },
-    flags: {
+    derived: {
       isDisabled: (_, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
       text: {
         isNotRecorded: 'Demo Disabled',
@@ -35,7 +35,7 @@ test('basic enum test2', () => {
       isUploading: false,
       isUploaded: true,
     },
-    flags: {
+    derived: {
       isDisabled: (_, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
       text: {
         isNotRecorded: 'Demo Disabled',
@@ -57,7 +57,7 @@ test('enums: when no state is true', () => {
       isUploading: false,
       isUploaded: false,
     },
-    flags: {
+    derived: {
       isDisabled: (_, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
       text: {
         isNotRecorded: 'Demo Disabled',

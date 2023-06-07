@@ -11,7 +11,7 @@ test('basic fn test', () => {
       isUploading: true,
       isUploaded: false,
     },
-    flags: {
+    derived: {
       isDisabled: (states) => (states.isNotRecorded || states.isUploading ? 1000 : 10),
       text: {
         isNotRecorded: 'Demo Disabled',
@@ -35,7 +35,7 @@ test('basic fn test 2', () => {
       isUploading: false,
       isUploaded: true,
     },
-    flags: {
+    derived: {
       isDisabled: (states) => (states.isNotRecorded || states.isUploading ? 1000 : 10),
       text: {
         isNotRecorded: 'Demo Disabled',
@@ -57,7 +57,7 @@ test('fns: when no state is true', () => {
       isUploading: false,
       isUploaded: false,
     },
-    flags: {
+    derived: {
       isDisabled: (states) => (states.isNotRecorded || states.isUploading ? 1000 : 10),
       text: {
         isNotRecorded: 'Demo Disabled',

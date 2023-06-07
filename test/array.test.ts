@@ -11,7 +11,7 @@ test('basic array test', () => {
       isUploading: true,
       isUploaded: false,
     },
-    flags: {
+    derived: {
       isDisabled: ['isNotRecorded', 'isUploading'],
       text: {
         isNotRecorded: 'Demo Disabled',
@@ -35,7 +35,7 @@ test('basic enum test2', () => {
       isUploading: false,
       isUploaded: true,
     },
-    flags: {
+    derived: {
       isDisabled: ['isNotRecorded', 'isUploading'],
       text: {
         isNotRecorded: 'Demo Disabled',
@@ -57,7 +57,7 @@ test('array test when no state value is true', () => {
       isUploading: false,
       isUploaded: false,
     },
-    flags: {
+    derived: {
       isDisabled: ['isNotRecorded', 'isUploading'],
       text: {
         isNotRecorded: 'Demo Disabled',
