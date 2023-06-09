@@ -34,3 +34,58 @@ expectError(
     },
   })
 );
+
+// protected derived keys
+expectError(
+  driver({
+    states: {
+      hello: true,
+      foobar: false,
+    },
+    derived: {
+      stateEnums: {
+        foo: 1,
+      },
+    },
+  })
+);
+
+expectError(
+  driver({
+    states: {
+      hello: true,
+      foobar: false,
+    },
+    derived: {
+      activeEnum: {
+        foo: 1,
+      },
+    },
+  })
+);
+expectError(
+  driver({
+    states: {
+      hello: true,
+      foobar: false,
+    },
+    derived: {
+      states: {
+        foo: 1,
+      },
+    },
+  })
+);
+expectError(
+  driver({
+    states: {
+      hello: true,
+      foobar: false,
+    },
+    derived: {
+      activeState: {
+        foo: 1,
+      },
+    },
+  })
+);
