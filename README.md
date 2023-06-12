@@ -2,16 +2,75 @@
 
 [![Build](https://github.com/switz/driver/actions/workflows/release.yaml/badge.svg)](https://github.com/switz/driver/actions/workflows/release.yaml) ![npm (scoped)](https://img.shields.io/npm/v/@switz/driver?color=blue) ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@switz/driver?color=green)
 
-Driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic trees.
+Driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic. Let's look at some sample code:
+
+```javascript
+const CheckoutButton = ({ cartItems, isLoading }) => {
+  const cartValidation = validation(cartItems);
+  const shoppingCart = driver({
+    states: {
+      isLoading,
+      isCartEmpty: cartItems.length === 0,
+      isCartInvalid: !!cartValidation.isError,
+      isCartValid: true, // fallback/default
+    },
+    derived: {
+      popoverText: {
+        //isLoading: undefined,
+        isCartEmpty: 'Your shopping cart is empty, add items to checkout',
+        isCartInvalid: 'Your shopping cart has errors: ' + cartValidation.errorText,
+      },
+      buttonVariant: {
+        isLoading: 'info',
+        isCartEmpty: 'info',
+        isCartInvalid: 'error',
+        isCartValid: 'primary',
+      },
+      onClick: {
+        // unspecified keys will return undefined when their state is active
+        // which is what we want anyway for an onClick handler
+        // we can re-use this key for the disabled prop too, since if there is no onClick handler,
+        // the button is disabled
+
+        // isCartEmpty: undefined,
+        // isCartInvalid: undefined,
+        isCartValid: checkout,
+      }
+    },
+  });
+
+  return (
+    <Popover content={shoppingCart.popoverText} disabled={!shoppingCart.popoverText}>
+      <Button icon="checkout" intent={shoppingCart.buttonVariant} disabled={!shoppingCart.onClick} onClick={shoppingCart.onClick}>
+        Checkout
+      </Button>
+    </Popover>
+  );
+}
+```
+
+What does this state tree look like in a rigid table?
+
+| States  | popoverText | buttonVariant | onClick |
+| ------------- | ------------- |
+| isLoading |  | info |  |
+| isCartEmpty | "Your shopping cart is empty..." | info |  |
+| isCartInvalid | "Your shopping cart has errors..." | error |  |
+| isCartValid |  | primary | () => checkout |
+
+The values on the left are the potential active states, and will map each key to the value in the matrix. Putting it in table form displays the rigidity of the logic that we're designing, rather than intermixing let/const/if/ternary logic.
+
+### Background
 
 After working with state machines, I realized I was tracking UI states via a plethora of boolean values, often intermixing const/let declarations with inline ternary logic. This is inevitable when working with a library like react.
 
-Even though state machines are very useful, often my UI state is derived from boolean logic (via API data or useStates) and not from a state machine I want to build and manually transition myself. This is effectively a dumb state machine that is controlled externally.
+Even though state machines are very useful, often my UI state is derived from boolean logic (via API data or useStates) and not from a state machine I want to build and manually transition myself. So let's take out the machine part and just reflect common stateful values.
 
-I wanted a way to carefully craft explicit states and derive common values from them. For example, a particular button component may have several states, but will always need to know:
+For example, a particular button component may have several states, but will always need to know:
 
-1. is the button disabled?
-2. what is the button text?
+1. is the button disabled or does it have an onClick handler?
+2. what is the button text, if it changes?
+3. what is the button's style/variant/intent, depending on if its valid or not?
 
 and other common values like
 
@@ -19,16 +78,48 @@ and other common values like
 
 By segmenting our UIs into explicit states, we can design and extend our UIs in a more pragmatic and extensible way. Logic is easier to reason about, organize, and test – and we can extend that logic without manipulating inline ternary expressions or fighting long lists of complex boolean logic.
 
+Maybe you have written (or had to modify), code that looks like this:
+
+```javascript
+const CheckoutButton = ({ cartItems }) => {
+  const cartValidation = validation(cartItems);
+  let popoverText = 'Your shopping cart is empty, add items to checkout';
+  let buttonVariant = 'info';
+  let isDisabled = true;
+
+  if (cartValidation.isError) {
+    popoverText = 'Your shopping cart has errors: ' + cartValidation.errorText;
+    buttonVariant = 'error';
+  }
+  else if (cartItems.length > 0) {
+    popoverText = null;
+    isDisabled = false;
+    buttonVariant = 'info';
+  }
+
+  return (
+    <Popover content={popoverText} disabled={!popoverText}>
+      <Button icon="checkout" intent={buttonVariant} disabled={isDisabled} onClick={checkout}>
+        Checkout
+      </Button>
+    </Popover>
+  );
+}
+```
+
+Touching this code is a mess, keeping track of the state tree is hard, and interleaving state values, boolean logic, and so on is cumbersome. You could write this a million different ways.
+
+Not to mention the implicit initial state that the default values imply the cart is empty. This state is essentially hidden to anyone reading the code. You could write this better – but you could also write it even worse. By using driver, your states are much more clearly delineated.
+
+
 ## Installation
 
 ```bash
 $ yarn add @switz/driver
-```
-
-or
-
-```bash
+# or
 $ npm i @switz/driver
+# or
+$ pnpm i @switz/driver
 ```
 
 ## Simple example:
@@ -70,54 +161,6 @@ The derived data is pulled from the state keys. You can pass a function (and ret
 `isDisabled` is true if any of the specified state keys are active, whereas `text` returns whichever string corresponds directly to the currently active state value.
 
 Now instead of tossing ternary statements and if else and tracking messy declarations, all of your ui state can be derived through a simpler and concise state-machine inspired pattern.
-
-## Code this replaces
-
-This is what I see a lot of UI code end up being:
-
-```javascript
-const DemoButton = ({ match }) => {
-  const isUploadedText = match.demo_uploaded ? 'Demo Uploaded' : 'Demo Uploading...';
-
-  return (
-    <Button icon="download" disabled={match.config.dontRecord || !match.demo_uploaded}>
-      {match.config.dontRecord ? 'Demo Not Recorded' : isUploadedText}
-    </Button>
-  );
-}
-```
-
-Touching this code is a mess, keeping track of the state tree is hard, and interleaving state values, boolean logic, and so on is cumbersome. You could write this a million different ways.
-
-#### Now this becomes
-
-```javascript
-const DemoButton = ({ match }) => {
-  const demoButton = driver({
-    states: {
-      isNotRecorded: !!match.config.dontRecord,
-      isUploading: !match.demo_uploaded,
-      isUploaded: !!match.demo_uploaded,
-    },
-    derived: {
-      isDisabled: (states) => states.isNotRecorded || states.isUploading,
-      text: {
-        isNotRecorded: 'Demo Disabled',
-        isUploading: 'Demo Uploading...',
-        isUploaded: 'Download Demo',
-      },
-    },
-  });
-
-  return (
-    <Button icon="download" disabled={!!demoButton.isDisabled}>
-      {demoButton.text}
-    </Button>
-  );
-}
-```
-
-The code is "longer", but all of the logic has been moved outside of the actual JSX, it's easy to understand what is supposed to be happening at a glance, and it's far more organized.
 
 The goal here is not to have _zero_ logic inside of your actual view, but to make it easier and more maintainable to design and build your view logic in some more complex situations.
 
