@@ -2,7 +2,52 @@
 
 [![Build](https://github.com/switz/driver/actions/workflows/release.yaml/badge.svg)](https://github.com/switz/driver/actions/workflows/release.yaml) ![npm (scoped)](https://img.shields.io/npm/v/@switz/driver?color=blue) ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@switz/driver?color=green)
 
-Driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic. Let's look at some sample code:
+Driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic. Let's look at some very basic sample code:
+
+```javascript
+const CheckoutButton = ({ cartItems, }) => {
+  const shoppingCart = driver({
+    states: {
+      isEmpty: cartItems.length === 0,
+      canCheckout: cartItems.length > 0,
+    },
+    derived: {
+      isDisabled: ['isError'],
+    },
+  });
+
+  return (
+      <Button icon="checkout" disabled={shoppingCart.isDisabled} onClick={onClick}>
+        Checkout
+      </Button>
+  );
+}
+```
+
+And here's the state chart of what we've designed:
+
+| States  | isDisabled |
+| ------------- | ------------- |
+| isEmpty | true |
+| canCheckout | false |
+
+Here we have two possible states: `isEmpty` or `canCheckout` and one derived value from each state: isDisabled. Now you're probably thinking – this is overkill! We only have two states, just do this:
+
+```javascript
+const CheckoutButton = ({ cartItems }) => {
+  const isEmpty = cartItems.length === 0;
+
+  return (
+      <Button icon="checkout" disabled={isEmpty} onClick={onClick}>
+        Checkout
+      </Button>
+  );
+}
+```
+
+And in many ways you'd be right. But as your logic and code grows, you'll end up going from simple flags to a mishmash of logic. What happens when we add a third, or fourth state, and more derived values? You can quickly go from 2 possible state values to perhaps 12, 24, more, and more.
+
+Here's a more complex example with 4 states and 3 derived values. Can you see how giving our state some rigidity could reduce logic bugs?
 
 ```javascript
 const CheckoutButton = ({ cartItems, isLoading }) => {
