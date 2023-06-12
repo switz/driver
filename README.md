@@ -12,14 +12,15 @@ const CheckoutButton = ({ cartItems, }) => {
       canCheckout: cartItems.length > 0,
     },
     derived: {
-      isDisabled: ['isError'],
+      // arrays return booleans checking if the activeState matches any item in the array
+      isDisabled: ['isEmpty'],
     },
   });
 
   return (
-      <Button icon="checkout" disabled={shoppingCart.isDisabled} onClick={onClick}>
-        Checkout
-      </Button>
+    <Button icon="checkout" disabled={shoppingCart.isDisabled} onClick={onClick}>
+      Checkout
+    </Button>
   );
 }
 ```
@@ -31,21 +32,21 @@ And here's the state chart of what we've designed:
 | isEmpty | true |
 | canCheckout | false |
 
-Here we have two possible states: `isEmpty` or `canCheckout` and one derived value from each state: isDisabled. Now you're probably thinking – this is overkill! We only have two states, just do this:
+Here we have two possible states: `isEmpty` or `canCheckout` and one derived value from each state: isDisabled. Now you're probably thinking – this is over-engineering! We only have two states, just do this:
 
 ```javascript
 const CheckoutButton = ({ cartItems }) => {
   const isEmpty = cartItems.length === 0;
 
   return (
-      <Button icon="checkout" disabled={isEmpty} onClick={onClick}>
-        Checkout
-      </Button>
+    <Button icon="checkout" disabled={isEmpty} onClick={onClick}>
+      Checkout
+    </Button>
   );
 }
 ```
 
-And in many ways you'd be right. But as your logic and code grows, you'll end up going from simple flags to a mishmash of logic. What happens when we add a third, or fourth state, and more derived values? You can quickly go from 2 possible state values to perhaps 12, 24, more, and more.
+And in many ways you'd be right. But as your logic and code grows, you'll end up going from simple boolean flags to a mishmash of logic. What happens when we add a third, or fourth state, and more derived values? You can quickly go from 2 possible state values to perhaps 12, 24, more, and more.
 
 Here's a more complex example with 4 states and 3 derived values. Can you see how giving our state some rigidity could reduce logic bugs?
 
