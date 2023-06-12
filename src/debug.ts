@@ -1,12 +1,13 @@
 import driver from './index.js';
 import type { Config, DerivedConfig, Return } from './types.d.ts';
 
-function driverDebug<const T extends string, K extends DerivedConfig<T>>(
+function debugDriver<const T extends string, K extends DerivedConfig<T>>(
   config: Config<T, K>
 ): Return<T, K>[] {
   const states = Object.keys(config.states);
 
-  return states.map((stateKey) => {
+  // injects a __debug_noMatches__ state key to show what happens when all state keys are false
+  return states.concat('__debug_noMatches__').map((stateKey) => {
     const internalStates = states.map((internalStateKey) => [
       internalStateKey,
       internalStateKey === stateKey,
@@ -19,4 +20,4 @@ function driverDebug<const T extends string, K extends DerivedConfig<T>>(
   });
 }
 
-export default driverDebug;
+export default debugDriver;

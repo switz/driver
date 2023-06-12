@@ -21,14 +21,10 @@ test('basic test', () => {
     },
   });
 
-  expect(demoButton.map((all) => all.activeState)).toEqual([
-    'isNotRecorded',
-    'isUploading',
-    'isUploaded',
-  ]);
-  expect(demoButton.map((all) => all.text)).toEqual([
-    'Demo Disabled',
-    'Demo Uploading...',
-    'Download Demo',
-  ]);
+  expect(String(demoButton.map((all) => all.activeState))).toBe(
+    String(['isNotRecorded', 'isUploading', 'isUploaded', undefined])
+  );
+  expect(String(demoButton.map((all) => all.text))).toBe(
+    String(['Demo Disabled', 'Demo Uploading...', 'Download Demo', undefined])
+  );
 });
