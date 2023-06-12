@@ -52,8 +52,8 @@ const CheckoutButton = ({ cartItems, isLoading }) => {
 What does this state tree look like in a rigid table?
 
 | States  | popoverText | buttonVariant | onClick |
-| ------------- | ------------- |
-| isLoading |  | info |  |
+| ------------- | ------------- | ------------- | ------------- |
+| isLoading |   | info |  |
 | isCartEmpty | "Your shopping cart is empty..." | info |  |
 | isCartInvalid | "Your shopping cart has errors..." | error |  |
 | isCartValid |  | primary | () => checkout |
