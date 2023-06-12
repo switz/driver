@@ -9,7 +9,7 @@
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.4.1",
+  "version": "0.5.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
@@ -20,8 +20,8 @@
     "test": "bun test && bun run test-types",
     "test-types": "tsd -t './src/index.ts' -f test/",
     "size": "size-limit",
-    "build": "dts build",
-    "prepare": "dts build"
+    "build": "dts build --entry ./src/index.ts --entry ./src/debug.ts",
+    "prepare": "dts build --entry ./src/index.ts --entry ./src/debug.ts"
   },
   "engines": {
     "node": " >=14.13.1 || >=16.0.0"
