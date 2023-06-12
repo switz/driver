@@ -4,16 +4,26 @@
 
 Driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic. Let's look at some very basic sample code:
 
+We define the possible states in the `states` object. The first state key to return true is the *active state* (these are akin to if/else statements).
+
 ```javascript
-const CheckoutButton = ({ cartItems, }) => {
+const CheckoutButton = ({ cartItems }) => {
   const shoppingCart = driver({
     states: {
       isEmpty: cartItems.length === 0,
       canCheckout: cartItems.length > 0,
     },
     derived: {
-      // arrays return booleans checking if the activeState matches any item in the array
+      // specifying an array returns a boolean based on if the active state matches any item in the array
       isDisabled: ['isEmpty'],
+
+      // similarly this can be written as an object
+      /*
+      isDisabled: {
+        isEmpty: true,
+        canCheckout: false
+      }
+      */
     },
   });
 
@@ -25,7 +35,7 @@ const CheckoutButton = ({ cartItems, }) => {
 }
 ```
 
-And here's the state chart of what we've designed:
+Drivers can be reflected as a state table:
 
 | States  | isDisabled |
 | ------------- | ------------- |
@@ -46,7 +56,7 @@ const CheckoutButton = ({ cartItems }) => {
 }
 ```
 
-And in many ways you'd be right. But as your logic and code grows, you'll end up going from simple boolean flags to a mishmash of logic. What happens when we add a third, or fourth state, and more derived values? You can quickly go from 2 possible state values to perhaps 12, 24, more, and more.
+And in many ways you'd be right. But as your logic and code grows, you'll end up going from simple boolean flags to a mishmash of logic. What happens when we add a third, or fourth state, and more derived values? You can quickly go from 2 possible state values to perhaps 12, 24, or many many more.
 
 Here's a more complex example with 4 states and 3 derived values. Can you see how giving our state some rigidity could reduce logic bugs?
 
