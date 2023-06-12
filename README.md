@@ -1,8 +1,20 @@
-<h1 align="center" style="border-bottom: none;">🏁 driver</h1>
+# driver
 
 [![Build](https://github.com/switz/driver/actions/workflows/release.yaml/badge.svg)](https://github.com/switz/driver/actions/workflows/release.yaml) ![npm (scoped)](https://img.shields.io/npm/v/@switz/driver?color=blue) ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@switz/driver?color=green)
 
 driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic. I've found it especially useful for stateful UI code, but it can be helpful in many contexts. This library has no connection to React, but it fits well alongside the React paradigm.
+
+## Installation
+
+```bash
+$ yarn add @switz/driver
+# or
+$ npm i @switz/driver
+# or
+$ pnpm i @switz/driver
+```
+
+## Basic Introduction
 
 Let's look at some very basic examples using it in React. 
 
@@ -16,15 +28,11 @@ const CheckoutButton = ({ cartItems }) => {
       canCheckout: cartItems.length > 0,
     },
     derived: {
-      // specifying an array returns a boolean based on if the active state matches any item in the array
-      isDisabled: ['isEmpty'],
-
-      /* similarly this can be written as an object
+      // the values inside `isDisabled` here map to whatever is the currently active state
       isDisabled: {
         isEmpty: true,
         canCheckout: false
       }
-      */
     },
   });
 
@@ -112,7 +120,7 @@ What does this state table look like?
 
 Putting it in table form displays the rigidity of the logic that we're designing.
 
-### Background
+## Background
 
 After working with state machines, I realized the benefits of giving your state rigidity. I noticed that I was tracking UI states via a plethora of boolean values, often intermixing const/let declarations with inline ternary logic. This is often inevitable when working with stateful UI libraries like react.
 
@@ -164,16 +172,6 @@ Touching this code is a mess, keeping track of the state tree is hard, and inter
 
 Not to mention the implicit initial state that the default values imply the cart is empty. This state is essentially hidden to anyone reading the code. You could write this better – but you could also write it even worse. By using driver, your states are much more clearly delineated.
 
-
-## Installation
-
-```bash
-$ yarn add @switz/driver
-# or
-$ npm i @switz/driver
-# or
-$ pnpm i @switz/driver
-```
 
 ## Other examples:
 
@@ -252,7 +250,7 @@ or you can access generated enums for more flexible logic
 ```javascript
 // derived
 {
-  isDisabled: (state, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
+  isDisabled: (_, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
 }
 ```
 
@@ -269,11 +267,13 @@ By using an array, you can specify a boolean if any item in the array matches th
 }
 ```
 
+This returns true if the active state is: `isNotRecorded` or `isUploading`.
+
 This is the same as writing: `(states) => states.isNotRecorded || states.isUploading` in the function API above.
 
-#### Object lookup
+#### Object Lookup
 
-If you want to have a unique value per active state, an object map is the easiest way to declare as such. Each key maps to what the value is for the active state. For Example:
+If you want to have an independent value per active state, an object map is the easiest way. Each state key returns its value if it is the active state. For Example:
 
 ```javascript
 // derived
@@ -290,13 +290,13 @@ If the current state is `isNotRecorded` then the `text` key will return `'Demo D
 
 `isUploading` will return `'Demo Uploading...'`, and `isUploaded` will return `'Download Demo'`.
 
-## This is naive
+## Warning: this is naive and changing
 
-I cobbled this together in a few hours or so, it's not fully tested or complete. I do think I'll end up using it quite a bit, but I'll likely rewrite the API and rename it and change a lot. Please contribute if you have ideas, I'm open to everything.
+This is still pretty early, the API surface may change. Code you write with this pattern may end up being _less_ efficient than before, with the hope that it reduces your logic bugs. This code is not _lazy_, so you may end up evaluating far more than you need for a given component. In my experience, you should not reach for a `driver` _immediately_, but as you see it fitting in, use it where it is handy. The _leafier_ the component, the more useful I've found it.
 
 ## Typescript
 
-This library is fully typed end-to-end. That said, this is the first time I've typed a library of this kind and I'm sure it could be improved. If you run into an issue, please raise it or submit a PR.
+This library is fully typed end-to-end. That said, this is the first time I've typed a library of this kind and it could definitely be improved. If you run into an issue, please raise it or submit a PR.
 
 ## Local Development
 
@@ -308,8 +308,6 @@ bun install
 
 To test:
 
-_waiting on bun to upgrade to TS 5 syntax support_
-
 ```bash
-bun test
+npm run test # we test the typescript types on top of basic unit tests
 ```
