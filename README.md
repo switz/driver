@@ -21,23 +21,22 @@ Let's look at some very basic examples using it in React.
 We define the possible states in the `states` object. The first state value to be true is the *active state* (these are akin to if/else statements).
 
 ```javascript
+import driver from '@switz/driver';
+
 const CheckoutButton = ({ cartItems }) => {
-  const shoppingCart = driver({
+  const button = driver({
     states: {
       isEmpty: cartItems.length === 0,
       canCheckout: cartItems.length > 0,
     },
     derived: {
-      // the values inside `isDisabled` here map to whatever is the currently active state
-      isDisabled: {
-        isEmpty: true,
-        canCheckout: false
-      }
+      // if the active state matches any strings in the array, `isDisabled` returns true
+      isDisabled: ['isEmpty'],
     },
   });
 
   return (
-    <Button icon="checkout" disabled={shoppingCart.isDisabled} onClick={onClick}>
+    <Button icon="checkout" disabled={button.isDisabled} onClick={onClick}>
       Checkout
     </Button>
   );
@@ -51,7 +50,9 @@ Since driver gives us some guardrails to our stateful logic, they can be reflect
 | isEmpty | true |
 | canCheckout | false |
 
-Here we have two possible states: `isEmpty` or `canCheckout` and one derived value from each state: isDisabled. Now you're probably thinking – this is over-engineering! We only have two states, just do this:
+Here we have two possible states: `isEmpty` or `canCheckout` and one derived value from each state: isDisabled.
+
+Now you're probably thinking – this is over-engineering! We only have two states, why not just do this:
 
 ```javascript
 const CheckoutButton = ({ cartItems }) => {
@@ -217,19 +218,35 @@ The goal here is not to have _zero_ logic inside of your actual view, but to mak
 
 The `driver` function takes an object parameter with two keys: `states` and `derived`.
 
-`states` is an object whose keys are the potential state values. Passing boolean values into these keys dictates which state key is currently active. The first key with a truthy value is the active state.
+```javascript
+driver({
+  states: {
+    state1: false,
+    state2: true,
+  },
+  derived: {
+    text: {
+      state1: 'State 1!',
+      state2: 'State 2!',
+    }
+  }
+})
+```
 
-`derived` is an object whose keys derive their values from what the current state key is. There are three interface for the `derived` object.
+`states` is an object whose keys are the potential state values. Passing dynamic boolean values into these keys dictates which state key is currently active. The first key with a truthy value is the active state.
+
+`derived` is an object whose keys derive their values from what the current state key is. There are three interfaces for the `derived` object.
 
 ### States
 
 ```javascript
-// states
-{
-  isNotRecorded: !!match.config.dontRecord,
-  isUploading: !match.demo_uploaded,
-  isUploaded: !!match.demo_uploaded,
-},
+driver({ 
+  states: {
+    isNotRecorded: match.config.dontRecord,
+    isUploading: !match.demo_uploaded,
+    isUploaded: match.demo_uploaded,
+  },
+});
 ```
 
 ### Derived
@@ -238,20 +255,33 @@ The `driver` function takes an object parameter with two keys: `states` and `der
 
 You can return any value you'd like out of the function using the state keys
 
-```javascript
-// derived
-{
-  isDisabled: (states) => states.isNotRecorded || states.isUploading,
-}
+```diff
+driver({
+  states: {
+    isNotRecorded: match.config.dontRecord,
+    isUploading: !match.demo_uploaded,
+    isUploaded: match.demo_uploaded,
+  },
++  derived: {
++    isDisabled: (states) => states.isNotRecorded || states.isUploading,
++  }
+})
 ```
 
 or you can access generated enums for more flexible logic
 
-```javascript
-// derived
-{
-  isDisabled: (_, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
-}
+
+```diff
+driver({
+  states: {
+    isNotRecorded: match.config.dontRecord,
+    isUploading: !match.demo_uploaded,
+    isUploaded: match.demo_uploaded,
+  },
+  derived: {
++   isDisabled: (_, stateEnums, activeEnum) => (activeEnum ?? 0) <= stateEnums.isUploading,
+  }
+})
 ```
 
 This declares that any state key _above_ isUploading means the button is disabled (in this case, `isNotRecorded` and `isUploading`).
@@ -260,11 +290,18 @@ This declares that any state key _above_ isUploading means the button is disable
 
 By using an array, you can specify a boolean if any item in the array matches the current state:
 
-```javascript
-// derived
-{
-  isDisabled: ['isNotRecorded', 'isUploading'],
-}
+
+```diff
+driver({
+  states: {
+    isNotRecorded: match.config.dontRecord,
+    isUploading: !match.demo_uploaded,
+    isUploaded: match.demo_uploaded,
+  },
+  derived: {
++   isDisabled: ['isNotRecorded', 'isUploading'],
+  }
+})
 ```
 
 This returns true if the active state is: `isNotRecorded` or `isUploading`.
@@ -275,15 +312,22 @@ This is the same as writing: `(states) => states.isNotRecorded || states.isUploa
 
 If you want to have an independent value per active state, an object map is the easiest way. Each state key returns its value if it is the active state. For Example:
 
-```javascript
-// derived
-{
-  text: {
-    isNotRecorded: 'Demo Disabled',
-    isUploading: 'Demo Uploading...',
-    isUploaded: 'Download Demo',
+
+```diff
+driver({
+  states: {
+    isNotRecorded: match.config.dontRecord,
+    isUploading: !match.demo_uploaded,
+    isUploaded: match.demo_uploaded,
   },
-}
+  derived: {
++   text: {
++     isNotRecorded: 'Demo Disabled',
++     isUploading: 'Demo Uploading...',
++     isUploaded: 'Download Demo',
++   },
+  }
+})
 ```
 
 If the current state is `isNotRecorded` then the `text` key will return `'Demo Disabled'`.
@@ -292,7 +336,7 @@ If the current state is `isNotRecorded` then the `text` key will return `'Demo D
 
 ## Warning: this is naive and changing
 
-This is still pretty early, the API surface may change. Code you write with this pattern may end up being _less_ efficient than before, with the hope that it reduces your logic bugs. This code is not _lazy_, so you may end up evaluating far more than you need for a given component. In my experience, you should not reach for a `driver` _immediately_, but as you see it fitting in, use it where it is handy. The _leafier_ the component, the more useful I've found it.
+This is still pretty early, the API surface may change. Code you write with this pattern may end up being _less_ efficient than before, with the hope that it reduces your logic bugs. This code is not _lazy_, so you may end up evaluating far more than you need for a given component. In my experience, you should not reach for a `driver` _immediately_, but as you see it fitting in, use it where it is handy. The _leafier_ the component (meaning further down the tree, closer to the bottom), the more useful I've found it.
 
 ## Typescript
 
