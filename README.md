@@ -284,7 +284,7 @@ driver({
 })
 ```
 
-This declares that any state key _above_ isUploading means the button is disabled (in this case, `isNotRecorded` and `isUploading`).
+This declares that any state key _above_ isUploaded means the button is disabled (in this case, `isNotRecorded` and `isUploading`). This is useful for when you have delinated states and you want to more dynamically define where those lines are.
 
 #### Array
 
