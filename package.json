@@ -1,7 +1,7 @@
 {
   "name": "@switz/driver",
   "main": "dist/cjs/index.cjs",
-  "module": "dist/driver.mjs",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
@@ -36,7 +36,7 @@
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.6.0-canary.4",
+  "version": "0.6.0-canary.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
