@@ -1,8 +1,8 @@
 type ProtectedKeys = keyof MetadataReturn<any>;
 
 type ProtectedObject<T extends object> = T & {
-  [P in ProtectedKeys]?: never
-}
+  [P in ProtectedKeys]?: never;
+};
 
 type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
   {
@@ -29,14 +29,15 @@ export type DerivedConfig<T extends string> = Record<
   RequireAtLeastOne<Partial<Record<T, unknown>>, T> | DerivedFn<T> | T[]
 >;
 
-export type Return<T extends string, K extends DerivedConfig<T>> = DerivedReturn<T, K> & MetadataReturn<T>;
+export type Return<T extends string, K extends DerivedConfig<T>> = DerivedReturn<T, K> &
+  MetadataReturn<T>;
 
 type MetadataReturn<T extends string> = {
   activeState: T | undefined;
   activeEnum: number | undefined;
   stateEnums: Record<T, number>;
   states: Record<T, boolean | undefined>;
-}
+};
 
 type DerivedReturn<StateKeys extends string, K extends DerivedConfig<StateKeys>> = {
   [P in keyof K]: K[P] extends DerivedFn<StateKeys>

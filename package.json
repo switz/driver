@@ -3,7 +3,6 @@
   "main": "dist/index.js",
   "module": "dist/driver.esm.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "files": [
     "dist",
     "src"
@@ -11,24 +10,14 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.esm.js"
-      },
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/cjs/index.cjs"
     },
     "./debug": {
-      "import": {
-        "types": "./dist/debug.d.ts",
-        "default": "./dist/debug.esm.js"
-      },
-      "require": {
-        "types": "./dist/debug.d.ts",
-        "default": "./dist/debug.js"
-      }
+      "types": "./dist/debug.d.ts",
+      "import": "./dist/debug.mjs",
+      "default": "./dist/cjs/debug.cjs"
     }
   },
   "sideEffects": false,
@@ -37,7 +26,7 @@
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.6.0-canary.1",
+  "version": "0.6.0-canary.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
@@ -48,8 +37,7 @@
     "test": "bun test && bun run test-types",
     "test-types": "tsd -t './src/index.ts' -f test/",
     "size": "size-limit",
-    "build": "dts build --entry ./src/index.ts --entry ./src/debug.ts",
-    "prepare": "dts build --entry ./src/index.ts --entry ./src/debug.ts"
+    "build": "tsup"
   },
   "engines": {
     "node": " >=14.13.1 || >=16.0.0"
@@ -58,10 +46,10 @@
     "@size-limit/preset-small-lib": "^8.2.4",
     "@switz/eslint-config": "^8.0.1",
     "bun-types": "^0.5.0",
-    "dts-cli": "^2.0.0",
     "prettier": "^2.8.7",
     "size-limit": "^8.2.4",
     "tsd": "^0.28.1",
+    "tsup": "^7.0.0",
     "typescript": "^5.0.3"
   },
   "size-limit": [

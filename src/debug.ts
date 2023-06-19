@@ -1,5 +1,5 @@
 import driver from './index.js';
-import type { Config, DerivedConfig, Return } from './types.d.ts';
+import type { Config, DerivedConfig, Return } from './types';
 
 function debugDriver<const T extends string, K extends DerivedConfig<T>>(
   config: Config<T, K>

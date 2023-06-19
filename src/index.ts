@@ -1,4 +1,4 @@
-import type { Config, DerivedConfig, Return } from './types.d.ts';
+import type { Config, DerivedConfig, Return } from './types';
 
 function driver<const T extends string, K extends DerivedConfig<T>>(
   config: Config<T, K>
