@@ -8,7 +8,7 @@ const commonOptions = {
   minify: true,
 };
 
-export default defineConfig((options) => [
+export default defineConfig(() => [
   {
     ...commonOptions,
     format: ['esm'],
