@@ -36,7 +36,7 @@
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.6.0-canary.7",
+  "version": "0.6.0-canary.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
@@ -73,7 +73,7 @@
   "typesVersions": {
     ">=4.0": {
       "index.d.ts": ["dist/index.d.ts"],
-      "debug.d.ts": ["dist/debug.d.ts"]
+      "debug": ["dist/debug.d.ts"]
     }
   }
 }
