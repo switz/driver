@@ -3,17 +3,41 @@
   "main": "dist/index.js",
   "module": "dist/driver.esm.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "files": [
-    "src",
-    "dist"
+    "dist",
+    "src"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.esm.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./debug": {
+      "import": {
+        "types": "./dist/debug.d.ts",
+        "default": "./dist/debug.esm.js"
+      },
+      "require": {
+        "types": "./dist/debug.d.ts",
+        "default": "./dist/debug.js"
+      }
+    }
+  },
   "sideEffects": false,
   "private": false,
   "author": {
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.5.2",
+  "version": "0.6.0-canary.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
