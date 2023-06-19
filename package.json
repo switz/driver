@@ -10,14 +10,24 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "default": "./dist/cjs/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
     },
     "./debug": {
-      "types": "./dist/debug.d.ts",
-      "import": "./dist/debug.mjs",
-      "default": "./dist/cjs/debug.cjs"
+      "import": {
+        "types": "./dist/debug.d.ts",
+        "default": "./dist/debug.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/debug.d.cts",
+        "default": "./dist/cjs/debug.cjs"
+      }
     }
   },
   "sideEffects": false,
@@ -26,7 +36,7 @@
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.6.0-canary.3",
+  "version": "0.6.0-canary.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
@@ -37,7 +47,8 @@
     "test": "bun test && bun run test-types",
     "test-types": "tsd -t './src/index.ts' -f test/",
     "size": "size-limit",
-    "build": "tsup"
+    "copy-ts": "cp dist/index.d.ts dist/cjs/index.d.cts && cp dist/debug.d.ts dist/cjs/debug.d.cts",
+    "build": "tsup && npm run copy-ts"
   },
   "engines": {
     "node": " >=14.13.1 || >=16.0.0"
