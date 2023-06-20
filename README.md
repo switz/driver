@@ -341,29 +341,29 @@ This is a button with unique text that stops working at 10 clicks. Just prepend 
 
 ```javascript
 <script>
-		import driver from "@switz/driver";
-		let count = 0;
+    import driver from "@switz/driver";
+    let count = 0;
 
-		function handleClick() {
-		  count += 1;
-		}
+    function handleClick() {
+      count += 1;
+    }
 
     // use $ to mark our driver as reactive
-		$: button = driver({
-		  states: {
-		    IS_ZERO: count === 0,
-		    IS_TEN: count >= 10,
-		    IS_MORE: count >= 0
-		  },
-		  derived: {
-		    text: {
-		      IS_ZERO: "Click me to get started",
-		      IS_MORE: `Clicked ${count} ${count === 1 ? "time" : "times"}`,
-		      IS_TEN: "DONE!"
-		    },
-		    isDisabled: ["IS_TEN"]
-		  }
-		});
+    $: button = driver({
+      states: {
+        IS_ZERO: count === 0,
+        IS_TEN: count >= 10,
+        IS_MORE: count >= 0
+      },
+      derived: {
+        text: {
+          IS_ZERO: "Click me to get started",
+          IS_MORE: `Clicked ${count} ${count === 1 ? "time" : "times"}`,
+          IS_TEN: "DONE!"
+        },
+        isDisabled: ["IS_TEN"]
+      }
+    });
 </script>
 
 <button on:click={handleClick} disabled={button.isDisabled}>
