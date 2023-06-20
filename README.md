@@ -349,7 +349,7 @@ This is a button with unique text that stops working at 10 clicks. Just prepend 
     }
 
     // use $ to mark our driver as reactive
-    $: button = driver({
+    $: buttonInfo = driver({
       states: {
         IS_ZERO: count === 0,
         IS_TEN: count >= 10,
@@ -366,10 +366,14 @@ This is a button with unique text that stops working at 10 clicks. Just prepend 
     });
 </script>
 
-<button on:click={handleClick} disabled={button.isDisabled}>
-  {button.text}
+<button on:click={handleClick} disabled={buttonInfo.isDisabled}>
+  {buttonInfo.text}
 </button>
 ```
+
+## Help and Support
+
+Join the Discord for help: https://discord.gg/dAKQQEDg9W
 
 ## Warning: this is naive and changing
 
