@@ -25,7 +25,7 @@ export type Config<T extends string, K extends DerivedConfig<T>> = {
 };
 
 export type DerivedConfig<T extends string> = Record<
-  string | symbol | number,
+  string,
   RequireAtLeastOne<Partial<Record<T, unknown>>, T> | DerivedFn<T> | T[]
 >;
 
