@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/switz/driver/actions/workflows/release.yaml/badge.svg)](https://github.com/switz/driver/actions/workflows/release.yaml) ![npm (scoped)](https://img.shields.io/npm/v/@switz/driver?color=blue) ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@switz/driver?color=green)
 
-driver is a framework agnostic, zero dependency, tiny utility for organizing boolean logic. I've found it especially useful for stateful UI code, but it can be helpful in many contexts. This library has no connection to React, but it fits well alongside the React paradigm.
+driver is a framework agnostic, zero dependency, tiny utility for organizing external data into finite states. I've found it especially useful for stateful UI code, but it can be helpful in many contexts including on the server. This library has no connection to React, but it fits well alongside the React paradigm.
 
 ## Installation
 
@@ -333,6 +333,43 @@ driver({
 If the current state is `isNotRecorded` then the `text` key will return `'Demo Disabled'`.
 
 `isUploading` will return `'Demo Uploading...'`, and `isUploaded` will return `'Download Demo'`.
+
+
+### Svelte Example
+
+This is a button with unique text that stops working at 10 clicks. Just prepend the driver call with `$: ` to mark it as reactive.
+
+```javascript
+<script>
+		import driver from "@switz/driver";
+		let count = 0;
+
+		function handleClick() {
+		  count += 1;
+		}
+
+    // use $ to mark our driver as reactive
+		$: button = driver({
+		  states: {
+		    IS_ZERO: count === 0,
+		    IS_TEN: count >= 10,
+		    IS_MORE: count >= 0
+		  },
+		  derived: {
+		    text: {
+		      IS_ZERO: "Click me to get started",
+		      IS_MORE: `Clicked ${count} ${count === 1 ? "time" : "times"}`,
+		      IS_TEN: "DONE!"
+		    },
+		    isDisabled: ["IS_TEN"]
+		  }
+		});
+</script>
+
+<button on:click={handleClick} disabled={button.isDisabled}>
+  {button.text}
+</button>
+```
 
 ## Warning: this is naive and changing
 
