@@ -34,12 +34,12 @@ const CheckoutButton = ({ cartItems, isLoading, checkout }) => {
       isCartValid: true, // fallback/default
     },
     derived: {
-      popoverText: {
-        // unspecified states (isLoading, isCartValid here) default to undefined
-        isCartEmpty: 'Your shopping cart is empty, add items to checkout',
-        isCartInvalid: 'Your shopping cart has errors: ' + cartValidation.errorText,
-      },
-      buttonVariant: {
+      // resolves to a boolean (true) if any state matches
+      // a key in the array
+      isDisabled: ['isLoading', 'isCartEmpty', 'isCartInvalid'],
+      // objects resolve to whichever value is specified as
+      // the currently active state
+      intent: {
         isLoading: 'info',
         isCartEmpty: 'info',
         isCartInvalid: 'error',
@@ -49,23 +49,37 @@ const CheckoutButton = ({ cartItems, isLoading, checkout }) => {
       // <button onClick handlers accept undefined so that's okay!
       onClick: {
         isCartValid: checkout,
-      }
+      },
     },
   });
 
   return (
-    <Popover content={shoppingCart.popoverText} disabled={!shoppingCart.popoverText}>
-      <Button
-        icon="checkout"
-        intent={shoppingCart.buttonVariant}
-        disabled={!shoppingCart.onClick}
-        onClick={shoppingCart.onClick}
-      >
-        Checkout
-      </Button>
-    </Popover>
+    <Button
+      icon="checkout"
+      intent={shoppingCart.intent}
+      disabled={shoppingCart.isDisabled}
+      onClick={shoppingCart.onClick}
+    >
+      Checkout
+    </Button>
   );
 }
+```
+
+If `isLoading` is the active state:
+
+```js
+shoppingCart.isDisabled => true
+shoppingCart.intent => 'info'
+shoppingCart.onClick => undefined
+```
+
+Similarly, if `isCartValid` is the active state:
+
+```js
+shoppingCart.isDisabled => false
+shoppingCart.intent => 'primary'
+shoppingCart.onClick => checkout
 ```
 
 ## 👩‍🏭 Basic Introduction
