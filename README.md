@@ -1,22 +1,78 @@
-# driver
+<div align="center">
+<h1>🏁 driver</h1>
 
 [![Build](https://github.com/switz/driver/actions/workflows/release.yaml/badge.svg)](https://github.com/switz/driver/actions/workflows/release.yaml) ![npm (scoped)](https://img.shields.io/npm/v/@switz/driver?color=blue) ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@switz/driver?color=green)
+</div>
 
-driver is a framework agnostic, zero dependency, tiny utility for organizing external data into finite states. I've found it especially useful for stateful UI code, but it can be helpful in many contexts including on the server. This library has no connection to React, but it fits well alongside the React paradigm.
+driver is a tiny typescript utility for organizing external data into finite states and deriving common values.
 
-## Installation
+Jump to [sample code](https://github.com/switz/driver#-Sample%50Code) or the [docs](https://github.com/switz/driver#docs).
+
+<h2>✨ Features</h2>
+
+- Tiny with zero dependencies (<500B _gzip_)
+- Framework agnostic (works with react, svelte, vue, node, deno, bun, cloudflare workers, etc.)
+- Fully typed
+- Declarative API
+
+<h2>📦 Installation</h2>
 
 ```bash
-$ yarn add @switz/driver
-# or
 $ npm i @switz/driver
-# or
-$ pnpm i @switz/driver
 ```
 
-## Basic Introduction
+<h2>🍬 Sample Code</h2>
 
-Let's look at some very basic examples using it in React. 
+```javascript
+const CheckoutButton = ({ cartItems, isLoading, checkout }) => {
+  const cartValidation = validation(cartItems);
+  const shoppingCart = driver({
+    states: {
+      isLoading,
+      isCartEmpty: cartItems.length === 0,
+      isCartInvalid: !!cartValidation.isError,
+      isCartValid: true, // fallback/default
+    },
+    derived: {
+      popoverText: {
+        // unspecified states (isLoading, isCartValid here) default to undefined
+        isCartEmpty: 'Your shopping cart is empty, add items to checkout',
+        isCartInvalid: 'Your shopping cart has errors: ' + cartValidation.errorText,
+      },
+      buttonVariant: {
+        isLoading: 'info',
+        isCartEmpty: 'info',
+        isCartInvalid: 'error',
+        isCartValid: 'primary',
+      },
+      // onClick will be undefined except `ifCartValid` is true
+      // <button onClick handlers accept undefined so that's okay!
+      onClick: {
+        isCartValid: checkout,
+      }
+    },
+  });
+
+  return (
+    <Popover content={shoppingCart.popoverText} disabled={!shoppingCart.popoverText}>
+      <Button
+        icon="checkout"
+        intent={shoppingCart.buttonVariant}
+        disabled={!shoppingCart.onClick}
+        onClick={shoppingCart.onClick}
+      >
+        Checkout
+      </Button>
+    </Popover>
+  );
+}
+```
+
+## 👩‍🏭 Basic Introduction
+
+Each driver works by defining finite states. Only **one** state can be active at any given time. The first state to resolve to `true` is active.
+
+Let's look at some examples. I'm going to use React, but you don't have to.
 
 We define the possible states in the `states` object. The first state value to be true is the *active state* (these are akin to if/else statements).
 
@@ -121,7 +177,7 @@ What does this state table look like?
 
 Putting it in table form displays the rigidity of the logic that we're designing.
 
-## Background
+## 🖼️ Background
 
 After working with state machines, I realized the benefits of giving your state rigidity. I noticed that I was tracking UI states via a plethora of boolean values, often intermixing const/let declarations with inline ternary logic. This is often inevitable when working with stateful UI libraries like react.
 
@@ -214,7 +270,7 @@ Now instead of tossing ternary statements and if else and tracking messy declara
 
 The goal here is not to have _zero_ logic inside of your actual view, but to make it easier and more maintainable to design and build your view logic in some more complex situations.
 
-## Docs
+## 👾 Docs
 
 The `driver` function takes an object parameter with two keys: `states` and `derived`.
 
@@ -240,7 +296,7 @@ driver({
 ### States
 
 ```javascript
-driver({ 
+driver({
   states: {
     isNotRecorded: match.config.dontRecord,
     isUploading: !match.demo_uploaded,
