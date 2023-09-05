@@ -6,7 +6,7 @@
 
 driver is a tiny typescript utility for organizing external data into finite states and deriving common values.
 
-Jump to [sample code](https://github.com/switz/driver#-Sample%50Code) or the [docs](https://github.com/switz/driver#docs).
+Jump to [sample code](https://github.com/switz/driver#-sample-code) or the [docs](https://github.com/switz/driver#-docs).
 
 <h2>✨ Features</h2>
 
