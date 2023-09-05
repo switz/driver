@@ -34,7 +34,7 @@ const CheckoutButton = ({ cartItems, isLoading, checkout }) => {
       isCartValid: true, // fallback/default
     },
     derived: {
-      // resolves to a boolean (true) if any state matches
+      // arrays resolve to a boolean (true) if any state matches
       // a key in the array
       isDisabled: ['isLoading', 'isCartEmpty', 'isCartInvalid'],
       // objects resolve to whichever value is specified as
@@ -45,6 +45,7 @@ const CheckoutButton = ({ cartItems, isLoading, checkout }) => {
         isCartInvalid: 'error',
         isCartValid: 'primary',
       },
+      // state keys that are not defined in objects return undefined
       // onClick will be undefined except `ifCartValid` is true
       // <button onClick handlers accept undefined so that's okay!
       onClick: {
@@ -440,6 +441,41 @@ This is a button with unique text that stops working at 10 clicks. Just prepend 
   {buttonInfo.text}
 </button>
 ```
+
+## Key Ordering Consistency
+
+My big concern here was abusing the ordering of object key ordering. Since the order of your `states object matters, I was worried that javascript may not respect key ordering.
+
+According to: https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order/38218582#38218582
+
+> Property order in normal Objects is a complex subject in JavaScript.
+>
+> While in ES5 explicitly no order has been specified, ES2015 defined an order in certain cases, and successive changes to the specification since have increasingly defined the order (even, as of ES2020, the for-in loop's order).
+>
+> This results in the following order (in certain cases):
+>
+> ```
+> Object {
+>  0: 0,
+>  1: "1",
+>  2: "2",
+>  b: "b",
+>  a: "a",
+>  m: function() {},
+>  Symbol(): "sym"
+> }
+> ```
+> The order for "own" (non-inherited) properties is:
+>
+>    Positive integer-like keys in ascending order
+>    String keys in insertion order
+>    Symbols in insertion order
+>
+> https://tc39.es/ecma262/#sec-ordinaryownpropertykeys
+
+Due to this, we force you to define your `states` keys as strings and only strings. This should prevent breaking the ordering of your state keys in modern javascript environments.
+
+If you feel this is wrong, please open an issue and show me how we can improve it.
 
 ## Help and Support
 
