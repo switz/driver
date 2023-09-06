@@ -4,9 +4,9 @@ function driver<const T extends string, K extends DerivedConfig<T>>(
   config: Config<T, K>
 ): Return<T, K> {
   // find the first active state
-  const activeState = Object.keys(config.states).find((key) => !!config.states[key as T]) as T;
-
   const stateKeys = Object.keys(config.states);
+  const activeState = stateKeys.find((key) => !!config.states[key as T]) as T;
+
 
   // find the enum of the active state
   const activeEnum = activeState ? stateKeys.indexOf(activeState) : undefined;
@@ -19,11 +19,11 @@ function driver<const T extends string, K extends DerivedConfig<T>>(
     // state keys must be real strings (not integer strings) otherwise we can't guarantee ordering
     // see: https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order/38218582#38218582
 
-    // this works in >= ES2020
+    // this should be reliable in >= ES2020
 
     // symbols will also break ordering
     // TODO: should we check for them with `Object.getOwnPropertySymbols`?
-    if (/^\d+$/.test(key)) throw new Error('State Keys must be strings');
+    if (/^\d+$/.test(key)) throw new Error('State keys can not start with numbers: ' + key);
   });
 
   // allow the use of the deprecated key flags for old code
