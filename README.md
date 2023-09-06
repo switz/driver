@@ -24,6 +24,8 @@ $ npm i @switz/driver
 <h2>🍬 Sample Code</h2>
 
 ```javascript
+import driver from '@switz/driver';
+
 const CheckoutButton = ({ cartItems, isLoading, checkout }) => {
   const cartValidation = validation(cartItems);
   const shoppingCart = driver({
