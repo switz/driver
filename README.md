@@ -10,10 +10,11 @@ Jump to [sample code](https://github.com/switz/driver#-sample-code) or the [docs
 
 <h2>✨ Features</h2>
 
-- Tiny with zero dependencies (<500B _gzip_)
+- Tiny with zero dependencies (<500B _gzipped + minified_)
 - Framework agnostic (works with react, svelte, vue, node, deno, bun, cloudflare workers, etc.)
 - Fully typed
 - Declarative API
+- Readable source code (~60 lines including comments)
 
 <h2>📦 Installation</h2>
 
