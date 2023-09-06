@@ -27,18 +27,18 @@ $ npm i @switz/driver
 ```javascript
 import driver from '@switz/driver';
 
-const CheckoutButton = ({ cartItems, isLoading, checkout }) => {
-  const cartValidation = validation(cartItems);
+const CheckoutButton = ({ cartData, isLoading, checkout }) => {
   const shoppingCart = driver({
+    // the first state to return true is the active state
     states: {
       isLoading,
-      isCartEmpty: cartItems.length === 0,
-      isCartInvalid: !!cartValidation.isError,
+      isCartEmpty: cartData.items.length === 0,
+      isCartInvalid: !!cartData.isError,
       isCartValid: true, // fallback/default
     },
     derived: {
-      // arrays resolve to a boolean (true) if any state matches
-      // a key in the array
+      // arrays resolve to a boolean (true) if the active state
+      // matches a state key in the array
       isDisabled: ['isLoading', 'isCartEmpty', 'isCartInvalid'],
       // objects resolve to whichever value is specified as
       // the currently active state
@@ -48,12 +48,6 @@ const CheckoutButton = ({ cartItems, isLoading, checkout }) => {
         isCartInvalid: 'error',
         isCartValid: 'primary',
       },
-      // state keys that are not defined in objects return undefined
-      // onClick will be undefined except `ifCartValid` is true
-      // <button onClick handlers accept undefined so that's okay!
-      onClick: {
-        isCartValid: checkout,
-      },
     },
   });
 
@@ -62,7 +56,7 @@ const CheckoutButton = ({ cartItems, isLoading, checkout }) => {
       icon="checkout"
       intent={shoppingCart.intent}
       disabled={shoppingCart.isDisabled}
-      onClick={shoppingCart.onClick}
+      onClick={checkout}
     >
       Checkout
     </Button>
@@ -75,7 +69,6 @@ If `isLoading` is the active state:
 ```js
 shoppingCart.isDisabled => true
 shoppingCart.intent => 'info'
-shoppingCart.onClick => undefined
 ```
 
 Similarly, if `isCartValid` is the active state:
@@ -83,7 +76,6 @@ Similarly, if `isCartValid` is the active state:
 ```js
 shoppingCart.isDisabled => false
 shoppingCart.intent => 'primary'
-shoppingCart.onClick => checkout
 ```
 
 ## 👩‍🏭 Basic Introduction
@@ -97,11 +89,11 @@ We define the possible states in the `states` object. The first state value to b
 ```javascript
 import driver from '@switz/driver';
 
-const CheckoutButton = ({ cartItems }) => {
+const CheckoutButton = ({ cartData }) => {
   const button = driver({
     states: {
-      isEmpty: cartItems.length === 0,
-      canCheckout: cartItems.length > 0,
+      isEmpty: cartData.items.length === 0,
+      canCheckout: cartData.items.length > 0,
     },
     derived: {
       // if the active state matches any strings in the array, `isDisabled` returns true
