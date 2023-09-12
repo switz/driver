@@ -5,7 +5,8 @@
   "types": "dist/index.d.mts",
   "files": [
     "dist",
-    "src"
+    "src",
+    "README.md"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -36,7 +37,7 @@
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.8.3",
+  "version": "0.8.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
