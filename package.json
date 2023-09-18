@@ -37,7 +37,7 @@
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.8.4",
+  "version": "0.8.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
@@ -74,7 +74,7 @@
   "typesVersions": {
     ">=4.0": {
       "*": [
-        "dist/index.d.mts"
+        "dist/*"
       ],
       "debug": [
         "dist/debug.d.mts"
