@@ -21,5 +21,5 @@ jobs:
           token: ${{ secrets.NPM_AUTH_TOKEN }}
       - uses: JS-DevTools/npm-publish@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_TOKEN }}
           registry: 'https://npm.pkg.github.com'
