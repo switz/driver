@@ -46,7 +46,7 @@
   "scripts": {
     "prepublish": "build",
     "test": "bun test && bun run test-types",
-    "test-types": "tsd -t './src/index.ts' -f test/",
+    "test-types": "tsd -t './src/index.ts' -f test/*.test-d.ts",
     "size": "size-limit",
     "copy-ts": "cp dist/index.d.mts dist/cjs/index.d.cts && cp dist/debug.d.mts dist/cjs/debug.d.cts",
     "build": "tsup && npm run copy-ts"
