@@ -7,7 +7,6 @@ function driver<const T extends string, K extends DerivedConfig<T>>(
   const stateKeys = Object.keys(config.states);
   const activeState = stateKeys.find((key) => !!config.states[key as T]) as T;
 
-
   // find the enum of the active state
   const activeEnum = activeState ? stateKeys.indexOf(activeState) : undefined;
 

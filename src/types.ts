@@ -1,4 +1,4 @@
-type ProtectedKeys = keyof MetadataReturn<any>;
+type ProtectedKeys = keyof MetadataReturn<string>;
 
 type ProtectedObject<T extends object> = T & {
   [P in ProtectedKeys]?: never;
