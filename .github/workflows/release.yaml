@@ -19,15 +19,12 @@ jobs:
       - uses: JS-DevTools/npm-publish@v2
         with:
           token: ${{ secrets.NPM_AUTH_TOKEN }}
-      - name: Create Release
-        if: steps.publish.outputs.type != 'none'
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+      - uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ steps.publish.outputs.version }}
-          release_name: Release ${{ steps.publish.outputs.version }}
-          body: ${{ steps.publish.outputs.version }}
-          draft: false
-          prerelease: false
+          tag: ${{ steps.package-version.outputs.current-version}}
+          artifacts: "dist/"
+          allowUpdates: true
+          removeArtifacts: true
