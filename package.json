@@ -37,7 +37,7 @@
     "name": "Daniel Saewitz (switz)",
     "url": "https://saewitz.com"
   },
-  "version": "0.8.6",
+  "version": "0.9.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/switz/driver.git"
@@ -55,14 +55,14 @@
     "node": " >=14.13.1 || >=16.0.0"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^8.2.4",
+    "@size-limit/preset-small-lib": "^11.0.1",
     "@switz/eslint-config": "^10.0.2",
-    "bun-types": "^0.8.1",
-    "prettier": "^3.0.3",
-    "size-limit": "^8.2.4",
-    "tsd": "^0.29.0",
-    "tsup": "^7.0.0",
-    "typescript": "^5.0.3"
+    "bun-types": "^1.0.21",
+    "prettier": "^3.1.1",
+    "size-limit": "^11.0.1",
+    "tsd": "^0.30.2",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
   },
   "size-limit": [
     {
