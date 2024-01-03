@@ -25,6 +25,5 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.package-version.outputs.current-version}}
-          artifacts: "dist/"
           allowUpdates: true
           removeArtifacts: true
