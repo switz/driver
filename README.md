@@ -6,7 +6,7 @@
 
 driver is a tiny typescript utility for organizing external data into finite states and deriving common values.
 
-Jump to [sample code](https://github.com/switz/driver#-sample-code) or the [docs](https://github.com/switz/driver#-docs). Get help & support in [the Discord](https://discord.gg/dAKQQEDg9W).
+Jump to [sample code](https://github.com/switz/driver?tab=readme-ov-file#-sample-code) or the [docs](https://github.com/switz/driver?tab=readme-ov-file#-docs). Get help & support in [the Discord](https://discord.gg/dAKQQEDg9W).
 
 <h2>✨ Features</h2>
 
@@ -23,6 +23,8 @@ $ npm i @switz/driver
 ```
 
 <h2>🍬 Sample Code</h2>
+
+This example is React, but driver is library agnostic.
 
 ```javascript
 import driver from '@switz/driver';
