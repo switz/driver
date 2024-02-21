@@ -29,39 +29,39 @@ This example is React, but driver is library agnostic.
 ```javascript
 import driver from '@switz/driver';
 
-const CheckoutButton = ({ cartData, isLoading, checkout }) => {
+const CheckoutButton = ({ items, isLoading, checkout }) => {
   const shoppingCart = driver({
-    // the first state to return true is the active state
+    // the first truthy state is the active state
     states: {
       isLoading,
-      isCartEmpty: cartData.items.length === 0,
-      isCartInvalid: !!cartData.isError,
+      isCartEmpty: items.length === 0,
       isCartValid: true, // fallback/default
     },
     derived: {
-      // arrays resolve to a boolean (true) if the active state
-      // matches a state key in the array
-      isDisabled: ['isLoading', 'isCartEmpty', 'isCartInvalid'],
-      // objects resolve to whichever value is specified as
-      // the currently active state
-      intent: {
-        isLoading: 'info',
-        isCartEmpty: 'info',
-        isCartInvalid: 'error',
-        isCartValid: 'primary',
+      // isDisabled resolves to a boolean if the state matches
+      isDisabled: ['isLoading', 'isCartInvalid'],
+      // intent resolves to the value of the active state (a string here)
+      popover: {
+        isCartInvalid: 'Your cart is empty, please add items',
       },
+      intent: {
+        isLoading: 'none',
+        isCartInvalid: 'error',
+        isCartValid: 'success',
+      }
     },
   });
 
   return (
-    <Button
-      icon="checkout"
-      intent={shoppingCart.intent}
-      disabled={shoppingCart.isDisabled}
-      onClick={checkout}
-    >
-      Checkout
-    </Button>
+    <Popover content={shoppingCart.popover}>
+      <Button
+        disabled={shoppingCart.isDisabled}
+        intent={shoppingCart.intent}
+        onClick={checkout}
+      >
+        Checkout
+      </Button>
+    </Popover>
   );
 }
 ```
@@ -70,14 +70,16 @@ If `isLoading` is the active state:
 
 ```js
 shoppingCart.isDisabled => true
-shoppingCart.intent => 'info'
+shoppingCart.intent => 'none'
+shoppingCart.popover => undefined
 ```
 
-Similarly, if `isCartValid` is the active state:
+Similarly, if `isCartInvalid` is the active state:
 
 ```js
-shoppingCart.isDisabled => false
-shoppingCart.intent => 'primary'
+shoppingCart.isDisabled => true
+shoppingCart.intent => 'error'
+shoppingCart.popover => 'Your cart is empty, please add items'
 ```
 
 ## 👩‍🏭 Basic Introduction
