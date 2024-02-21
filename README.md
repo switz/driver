@@ -66,21 +66,14 @@ const CheckoutButton = ({ items, isLoading, checkout }) => {
 }
 ```
 
-If `isLoading` is the active state:
+And we can represent our logic and ui as a truth table:
 
-```js
-shoppingCart.isDisabled => true
-shoppingCart.intent => 'none'
-shoppingCart.popover => undefined
-```
+|             | isDisabled |  intent | popover        |
+|------------:|:----------:|:-------:|----------------|
+|   isLoading |    true    |   none  |                |
+| isCartEmpty |    true    |  error  | "Your cart..." |
+| isCartValid |    false   | success |                |
 
-Similarly, if `isCartEmpty` is the active state:
-
-```js
-shoppingCart.isDisabled => true
-shoppingCart.intent => 'error'
-shoppingCart.popover => 'Your cart is empty, please add items'
-```
 
 ## 👩‍🏭 Basic Introduction
 
