@@ -39,14 +39,14 @@ const CheckoutButton = ({ items, isLoading, checkout }) => {
     },
     derived: {
       // isDisabled resolves to a boolean if the state matches
-      isDisabled: ['isLoading', 'isCartInvalid'],
+      isDisabled: ['isLoading', 'isCartEmpty'],
       // intent resolves to the value of the active state (a string here)
       popover: {
-        isCartInvalid: 'Your cart is empty, please add items',
+        isCartEmpty: 'Your cart is empty, please add items',
       },
       intent: {
         isLoading: 'none',
-        isCartInvalid: 'error',
+        isCartEmpty: 'error',
         isCartValid: 'success',
       }
     },
@@ -74,7 +74,7 @@ shoppingCart.intent => 'none'
 shoppingCart.popover => undefined
 ```
 
-Similarly, if `isCartInvalid` is the active state:
+Similarly, if `isCartEmpty` is the active state:
 
 ```js
 shoppingCart.isDisabled => true
