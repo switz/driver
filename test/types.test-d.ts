@@ -18,7 +18,7 @@ const derived = driver({
 expectType<boolean | undefined>(derived.isDisabled);
 expectType<number | undefined>(derived.activeEnum);
 expectType<'hello' | 'foobar' | 'test' | undefined>(derived.activeState);
-expectType<Record<'hello' | 'foobar' | 'test', number>>(derived.stateEnums);
+expectType<Record<'hello' | 'foobar' | 'test', number>>(derived.enums);
 expectType<string | undefined>(derived.optionalParams);
 
 const allDerived = driver({
@@ -31,13 +31,12 @@ const allDerived = driver({
     params: {
       hello: 'hello',
       foobar: 'hi',
-      test: 'foo'
+      test: 'foo',
     },
   },
 });
 
 expectType<string | undefined>(allDerived.params);
-
 
 // expect an error because no params are passed into a flag
 expectError(
@@ -61,7 +60,7 @@ expectError(
       foobar: false,
     },
     derived: {
-      stateEnums: {
+      enums: {
         foo: 1,
       },
     },

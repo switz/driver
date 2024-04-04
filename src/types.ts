@@ -11,7 +11,7 @@ type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyo
 
 type DerivedFn<StateKeys extends string> = (
   states: Record<StateKeys, boolean | undefined>,
-  stateEnums: Record<StateKeys, number>,
+  enums: Record<StateKeys, number>,
   activeEnum: number | undefined
 ) => unknown;
 
@@ -35,7 +35,7 @@ export type Return<T extends string, K extends DerivedConfig<T>> = DerivedReturn
 type MetadataReturn<T extends string> = {
   activeState: T | undefined;
   activeEnum: number | undefined;
-  stateEnums: Record<T, number>;
+  enums: Record<T, number>;
   states: Record<T, boolean | undefined>;
 };
 
