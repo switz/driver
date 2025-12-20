@@ -43,8 +43,8 @@ type DerivedReturn<StateKeys extends string, K extends DerivedConfig<StateKeys>>
   [P in keyof K]: K[P] extends DerivedFn<StateKeys>
     ? ReturnType<K[P]>
     : K[P] extends Array<StateKeys>
-    ? boolean
-    : K[P] extends object
-    ? K[P][keyof K[P]] | undefined
-    : undefined;
+      ? boolean
+      : K[P] extends object
+        ? K[P][keyof K[P]] | undefined
+        : undefined;
 };

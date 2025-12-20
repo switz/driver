@@ -1,8 +1,0 @@
-{
-  "extends": [
-    "@switz/eslint-config/typescript.cjs"
-  ],
-  "rules": {
-    "@typescript-eslint/no-namespace": 0
-  }
-}

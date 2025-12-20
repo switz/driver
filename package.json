@@ -55,12 +55,13 @@
     "node": " >=14.13.1 || >=16.0.0"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^11.0.1",
-    "@switz/eslint-config": "^10.0.2",
+    "@size-limit/preset-small-lib": "^12.0.0",
+    "@switz/eslint-config": "^12.3.3",
     "bun-types": "^1.0.21",
+    "eslint": "^9.39.2",
     "prettier": "^3.1.1",
-    "size-limit": "^11.0.1",
-    "tsd": "^0.30.2",
+    "size-limit": "^12.0.0",
+    "tsd": "^0.33.0",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
